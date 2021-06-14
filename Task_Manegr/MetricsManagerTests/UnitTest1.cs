@@ -1,5 +1,7 @@
 using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using Xunit;
 
@@ -8,10 +10,12 @@ namespace MetricsManagerTests
     public class CpuMetricsControllerUnitTests
     {
         private CpuMetricsController controller;
+        private Mock<ILogger<CpuMetricsController>> _loggerMock;
 
         public CpuMetricsControllerUnitTests()
         {
-            controller = new CpuMetricsController();
+            _loggerMock = new Mock<ILogger<CpuMetricsController>>();
+            controller = new CpuMetricsController(_loggerMock.Object);
         }
 
         [Fact]
@@ -62,12 +66,12 @@ namespace MetricsManagerTests
         }
         [Fact]
         public void DotNetMetricsController_GetMetricsFromAllCluster_ReturnsOk()
-        {            
+        {
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            
+
             var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
-                        
+
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
     }

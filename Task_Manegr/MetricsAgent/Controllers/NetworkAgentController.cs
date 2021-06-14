@@ -12,18 +12,40 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class NetworkAgentController : ControllerBase
     {
+        private INetworkMetricsRepository repository;
         private readonly ILogger<NetworkAgentController> _logger;
-
-        public NetworkAgentController(ILogger<NetworkAgentController> logger)
+        public NetworkAgentController(INetworkMetricsRepository repository, ILogger<NetworkAgentController> logger)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в NetworkAgentController");
+            this.repository = repository;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetAgentFromAgent([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public IActionResult GetAgentFromAgent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
-            return Ok();
+            _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
+            var metrics = repository.GetAll();
+
+            var response = new AllNetworkMetricsResponse()
+            {
+                Metrics = new List<NetworkMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(new NetworkMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+            }
+
+            return Ok(response);
         }
+    }
+    public class NetworkMetric
+    {
+        public int Id { get; set; }
+
+        public int Value { get; set; }
+
+        public DateTimeOffset Time { get; set; }
     }
 }
