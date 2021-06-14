@@ -22,10 +22,10 @@ namespace MetricsAgent.Controllers
             this.repository = repository;
         }
 
-        [HttpGet("left")]
-        public IActionResult GetAgentFromAgent()
+        [HttpGet("left/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetAgentFromAgent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
-            _logger.LogInformation("Данные НДД");
+            _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
             var metrics = repository.GetAll();
 
             var response = new AllHddMetricsResponse()

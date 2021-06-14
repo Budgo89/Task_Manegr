@@ -76,8 +76,10 @@ namespace MetricsAgentTests
         [Fact]
         public void DotNetAgentController_GetMetricsFromAgent_ReturnsOk()
         {
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
             repMock.Setup(repository => repository.GetAll()).Returns(new List<HddMetric>());
-            var result = controller.GetAgentFromAgent();
+            var result = controller.GetAgentFromAgent(fromTime, toTime);
             repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
@@ -124,8 +126,10 @@ namespace MetricsAgentTests
         [Fact]
         public void DotNetAgentController_GetMetricsFromAgent_ReturnsOk()
         {
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
             repMock.Setup(repository => repository.GetAll()).Returns(new List<RamMetric>());
-            var result = controller.GetAgentFromAgent();
+            var result = controller.GetAgentFromAgent(fromTime, toTime);
             repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }

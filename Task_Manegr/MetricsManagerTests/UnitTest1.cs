@@ -23,8 +23,8 @@ namespace MetricsManagerTests
         {
             //Arrange
             var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             //Act
             var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
@@ -36,8 +36,8 @@ namespace MetricsManagerTests
         public void CpuMetricsController_GetMetricsFromAllCluster_ReturnsOk()
         {
             //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             //Act
             var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
@@ -50,16 +50,19 @@ namespace MetricsManagerTests
     public class DotNetMetricsControllerUnitTests
     {
         private DotNetMetricsController controller;
+        private Mock<ILogger<DotNetMetricsController>> _loggerMock;
+
         public DotNetMetricsControllerUnitTests()
         {
-            controller = new DotNetMetricsController();
+            _loggerMock = new Mock<ILogger<DotNetMetricsController>>();
+            controller = new DotNetMetricsController(_loggerMock.Object);
         }
         [Fact]
         public void DotNetMetricsController_GetMetricsFromAgent_ReturnsOk()
         {
             var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -67,8 +70,8 @@ namespace MetricsManagerTests
         [Fact]
         public void DotNetMetricsController_GetMetricsFromAllCluster_ReturnsOk()
         {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
@@ -79,22 +82,28 @@ namespace MetricsManagerTests
     public class HddMetricsControllerUnitTests
     {
         private HddMetricsController controller;
+        private Mock<ILogger<HddMetricsController>> _loggerMock;
         public HddMetricsControllerUnitTests()
         {
-            controller = new HddMetricsController();
+            _loggerMock = new Mock<ILogger<HddMetricsController>>();
+            controller = new HddMetricsController(_loggerMock.Object);
         }
         [Fact]
         public void HddMetricsController_GetMetricsFromAgent_ReturnsOk()
         {
             var agentId = 1;
-
-            var result = controller.GetMetricsFromAgent(agentId);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+            var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
         [Fact]
         public void HddMetricsController_GetMetricsFromAllCluster_ReturnsOk()
         {
-            var result = controller.GetMetricsFromAllCluster();
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+
+            var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
@@ -103,16 +112,18 @@ namespace MetricsManagerTests
     public class NetworkMetricsControllerUnitTests
     {
         private NetworkMetricsController controller;
+        private Mock<ILogger<NetworkMetricsController>> _loggerMock;
         public NetworkMetricsControllerUnitTests()
         {
-            controller = new NetworkMetricsController();
+            _loggerMock = new Mock<ILogger<NetworkMetricsController>>();
+            controller = new NetworkMetricsController(_loggerMock.Object);
         }
         [Fact]
         public void NetworkMetricsController_GetMetricsFromAgent_ReturnsOk()
         {
             var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -120,8 +131,8 @@ namespace MetricsManagerTests
         [Fact]
         public void NetworkMetricsController_GetMetricsFromAllCluster_ReturnsOk()
         {
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
             var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
@@ -132,22 +143,27 @@ namespace MetricsManagerTests
     public class RamMetricsControllerUnitTests
     {
         private RamMetricsController controller;
+        private Mock<ILogger<RamMetricsController>> _loggerMock;
         public RamMetricsControllerUnitTests()
         {
-            controller = new RamMetricsController();
+            _loggerMock = new Mock<ILogger<RamMetricsController>>();
+            controller = new RamMetricsController(_loggerMock.Object);
         }
         [Fact]
         public void RamMetricsController_GetMetricsFromAgent_ReturnsOk()
         {
             var agentId = 1;
-
-            var result = controller.GetMetricsFromAgent(agentId);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+            var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
         [Fact]
         public void RamMetricsController_GetMetricsFromAllCluster_ReturnsOk()
         {
-            var result = controller.GetMetricsFromAllCluster();
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+            var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
@@ -156,9 +172,11 @@ namespace MetricsManagerTests
     public class AgentsControllerUnitTests
     {
         private AgentsController controller;
+        private Mock<ILogger<AgentsController>> _loggerMock;
         public AgentsControllerUnitTests()
         {
-            controller = new AgentsController();
+            _loggerMock = new Mock<ILogger<AgentsController>>();
+            controller = new AgentsController(_loggerMock.Object);
         }
         [Fact]
         public void RegisterAgent_ReturnsOk()

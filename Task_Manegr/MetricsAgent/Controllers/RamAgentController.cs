@@ -21,10 +21,10 @@ namespace MetricsAgent.Controllers
             _logger.LogDebug(1, "NLog встроен в RamAgentController");
             this.repository = repository;
         }
-        [HttpGet("available")]
-        public IActionResult GetAgentFromAgent()
+        [HttpGet("available/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetAgentFromAgent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
-            _logger.LogInformation("Данные Ram");
+            _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
 
             var metrics = repository.GetAll();
 
