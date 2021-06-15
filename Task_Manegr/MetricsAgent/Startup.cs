@@ -46,20 +46,30 @@ namespace MetricsAgent
             const string connectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
             var connection = new SQLiteConnection(connectionString);
             connection.Open();
-            PrepareSchema(connection);
+            PrepareSchemaCpu(connection);
         }
+        // БД сгенерированы с Tue, 15 Jun 2021 06:00:00 GMT по Tue, 15 Jun 2021 10:00:00 GMT
 
-        private void PrepareSchema(SQLiteConnection connection)
+        private void PrepareSchemaCpu(SQLiteConnection connection)
         {
             using (var command = new SQLiteCommand(connection))
             {
 
-                command.CommandText = "DROP TABLE IF EXISTS cpumetrics";
+                command.CommandText = "DROP TABLE IF EXISTS metrics";
                 command.ExecuteNonQuery();
 
 
-                command.CommandText = @"CREATE TABLE cpumetrics(id INTEGER PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE metrics(id INTEGER PRIMARY KEY, value INT, time INT)";
                 command.ExecuteNonQuery();
+
+                Random rand = new Random();
+                for (int i = 0; i < 50; i++)
+                {
+                    string comText = $"INSERT INTO metrics(value, time) VALUES({rand.Next(1,100)},{rand.Next(1623736800, 1623751200)})";
+                    command.CommandText = comText;
+                    command.ExecuteNonQuery();
+                }
+              
             }
 
         }

@@ -10,13 +10,15 @@ namespace MetricsAgent.Controllers
     public class HddMetricsRepository : IHddMetricsRepository
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-        public IList<HddMetric> GetAll()
+        public IList<HddMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);
 
-            cmd.CommandText = "SELECT * FROM cpumetrics";
+            string comText = $"SELECT * FROM metrics WHERE (time > {fromTime.ToUnixTimeSeconds()}) AND (time < {toTime.ToUnixTimeSeconds()})";
+            cmd.CommandText = comText;
+            cmd.ExecuteNonQuery();
 
             var returnList = new List<HddMetric>();
 
@@ -38,5 +40,6 @@ namespace MetricsAgent.Controllers
 
             return returnList;
         }
+
     }
 }

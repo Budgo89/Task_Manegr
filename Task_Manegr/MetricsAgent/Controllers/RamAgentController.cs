@@ -26,7 +26,10 @@ namespace MetricsAgent.Controllers
         {
             _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
 
-            var metrics = repository.GetAll();
+            fromTime = new DateTimeOffset(fromTime.UtcDateTime);
+            toTime = new DateTimeOffset(toTime.UtcDateTime);
+
+            var metrics = repository.GetByTimePeriod(fromTime, toTime);
 
             var response = new AllRamMetricsResponse()
             {

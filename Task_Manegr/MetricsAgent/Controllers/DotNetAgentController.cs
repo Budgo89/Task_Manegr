@@ -26,7 +26,10 @@ namespace MetricsAgent.Controllers
         public IActionResult GetAgentFromAgent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
             _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
-            var metrics = repository.GetAll();
+            fromTime = new DateTimeOffset(fromTime.UtcDateTime);
+            toTime = new DateTimeOffset(toTime.UtcDateTime);
+
+            var metrics = repository.GetByTimePeriod(fromTime, toTime);
             var response = new AllDotNetMetricsResponse()
             {
                 Metrics = new List<DotNetMetricDto>()

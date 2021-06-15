@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace MetricsAgent
 {
     public interface IRepository<T> where T : class
-    {
-        IList<T> GetAll();
+    {      
+        IList<T> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime);
     }
 }

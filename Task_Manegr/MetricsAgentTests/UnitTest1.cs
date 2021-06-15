@@ -28,10 +28,10 @@ namespace MetricsAgentTests
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
-            repMock.Setup(repository => repository.GetAll()).Returns(new List<CpuMetric>());
+            repMock.Setup(repository => repository.GetByTimePeriod(fromTime, toTime)).Returns(new List<CpuMetric>());
 
             var result = controller.GetAgentFromAgent(fromTime, toTime);
-            repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
+            repMock.Verify(repository => repository.GetByTimePeriod(fromTime, toTime), Times.AtLeastOnce());
 
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
@@ -54,9 +54,9 @@ namespace MetricsAgentTests
         {
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
-            repMock.Setup(repository => repository.GetAll()).Returns(new List<DotNetMetric>());
+            repMock.Setup(repository => repository.GetByTimePeriod(fromTime, toTime)).Returns(new List<DotNetMetric>());
             var result = controller.GetAgentFromAgent(fromTime, toTime);
-            repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
+            repMock.Verify(repository => repository.GetByTimePeriod(fromTime, toTime), Times.AtLeastOnce());
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
     }
@@ -78,9 +78,9 @@ namespace MetricsAgentTests
         {
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
-            repMock.Setup(repository => repository.GetAll()).Returns(new List<HddMetric>());
+            repMock.Setup(repository => repository.GetByTimePeriod(fromTime, toTime)).Returns(new List<HddMetric>());
             var result = controller.GetAgentFromAgent(fromTime, toTime);
-            repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
+            repMock.Verify(repository => repository.GetByTimePeriod(fromTime, toTime), Times.AtLeastOnce());
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
     }
@@ -104,9 +104,9 @@ namespace MetricsAgentTests
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
 
-            repMock.Setup(repository => repository.GetAll()).Returns(new List<NetworkMetric>());
+            repMock.Setup(repository => repository.GetByTimePeriod(fromTime, toTime)).Returns(new List<NetworkMetric>());
             var result = controller.GetAgentFromAgent(fromTime, toTime);
-            repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
+            repMock.Verify(repository => repository.GetByTimePeriod(fromTime, toTime), Times.AtLeastOnce());
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
     }
@@ -128,9 +128,9 @@ namespace MetricsAgentTests
         {
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
-            repMock.Setup(repository => repository.GetAll()).Returns(new List<RamMetric>());
+            repMock.Setup(repository => repository.GetByTimePeriod(fromTime, toTime)).Returns(new List<RamMetric>());
             var result = controller.GetAgentFromAgent(fromTime, toTime);
-            repMock.Verify(repository => repository.GetAll(), Times.AtLeastOnce());
+            repMock.Verify(repository => repository.GetByTimePeriod(fromTime, toTime), Times.AtLeastOnce());
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
     }
