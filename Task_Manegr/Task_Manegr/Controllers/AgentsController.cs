@@ -40,11 +40,12 @@ namespace MetricsManager.Controllers
             _logger.LogInformation("Входные данные {agentId}", agentId);
             return Ok();
         }
+        [HttpGet("receiving")]
+        public IActionResult ReceivingAgentById()
+        {
+            _logger.LogInformation("Входные данные");
+            return Ok();
+        }
     }
-    public class AgentInfo
-    {
-        public int AgentId { get; }
 
-        public Uri AgentAddress { get; }
-    }
 }
