@@ -9,13 +9,11 @@ namespace MetricsAgent.Controllers
     }
     public class DotNetMetricsRepository : IDotNetMetricsRepository
     {
+        private ConnectionManager connectionManager = new ConnectionManager();
 
         public IList<DotNetMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            var connectionManager = new ConnectionManager();
-            var ConnectionString = connectionManager.CreateOpenedConnection();
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
+            using var connection = connectionManager.GetOpenedConnection();
             using var cmd = new SQLiteCommand(connection);
 
             string comText = $"SELECT * FROM metrics WHERE (time > {fromTime.ToUnixTimeSeconds()}) AND (time < {toTime.ToUnixTimeSeconds()})";

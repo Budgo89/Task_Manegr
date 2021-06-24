@@ -9,13 +9,11 @@ namespace MetricsAgent.Controllers
     }
     public class NetworkMetricsRepository : INetworkMetricsRepository
     {
+        private ConnectionManager connectionManager = new ConnectionManager();
 
         public IList<NetworkMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            var connectionManager = new ConnectionManager();
-            var ConnectionString = connectionManager.CreateOpenedConnection();
-            using var connection = new SQLiteConnection(ConnectionString);
-            connection.Open();
+            using var connection = connectionManager.GetOpenedConnection();
             using var cmd = new SQLiteCommand(connection);
 
             string comText = $"SELECT * FROM metrics WHERE (time > {fromTime.ToUnixTimeSeconds()}) AND (time < {toTime.ToUnixTimeSeconds()})";

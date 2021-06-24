@@ -9,6 +9,7 @@ namespace MetricsAgent
     public interface IConnectionManager
     {
         string CreateOpenedConnection();
+        SQLiteConnection GetOpenedConnection();
     }
     public class ConnectionManager : IConnectionManager
     {
@@ -16,6 +17,12 @@ namespace MetricsAgent
         public string CreateOpenedConnection()
         {
             return ConnectionString;
+        }
+        public SQLiteConnection GetOpenedConnection()
+        {
+            var connection = new SQLiteConnection(ConnectionString);
+            connection.Open();
+            return connection;
         }
     }
 
