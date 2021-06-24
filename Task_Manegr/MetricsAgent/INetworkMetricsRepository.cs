@@ -9,9 +9,11 @@ namespace MetricsAgent.Controllers
     }
     public class NetworkMetricsRepository : INetworkMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+
         public IList<NetworkMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
+            var connectionManager = new ConnectionManager();
+            var ConnectionString = connectionManager.CreateOpenedConnection();
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);

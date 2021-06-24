@@ -9,9 +9,11 @@ namespace MetricsAgent.Controllers
     }
     public class DotNetMetricsRepository : IDotNetMetricsRepository
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+
         public IList<DotNetMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
+            var connectionManager = new ConnectionManager();
+            var ConnectionString = connectionManager.CreateOpenedConnection();
             using var connection = new SQLiteConnection(ConnectionString);
             connection.Open();
             using var cmd = new SQLiteCommand(connection);

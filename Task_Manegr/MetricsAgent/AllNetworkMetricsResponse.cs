@@ -11,7 +11,7 @@ namespace MetricsAgent.Controllers
     public class NetworkMetricDto
     {
         public DateTimeOffset Time { get; set; }
-        public int Value { get; set; }
+        public long Value { get; set; }
         public int Id { get; set; }
     }
 }
