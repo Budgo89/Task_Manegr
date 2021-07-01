@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,12 +15,13 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<DotNetAgentController> _logger;
         private IDotNetMetricsRepository repository;
-
-        public DotNetAgentController(IDotNetMetricsRepository repository, ILogger<DotNetAgentController> logger)
+        private readonly IMapper mapper;
+        public DotNetAgentController(IDotNetMetricsRepository repository, ILogger<DotNetAgentController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в DotNetAgentController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
@@ -28,7 +30,6 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
             fromTime = new DateTimeOffset(fromTime.UtcDateTime);
             toTime = new DateTimeOffset(toTime.UtcDateTime);
-
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
             var response = new AllDotNetMetricsResponse()
             {
@@ -37,7 +38,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new DotNetMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<DotNetMetricDto>(metric));
             }
 
             return Ok(response);

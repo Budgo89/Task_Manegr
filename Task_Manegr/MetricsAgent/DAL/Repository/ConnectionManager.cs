@@ -4,13 +4,8 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsAgent
+namespace MetricsAgent.DAL.Repository
 {
-    public interface IConnectionManager
-    {
-        string CreateOpenedConnection();
-        SQLiteConnection GetOpenedConnection();
-    }
     public class ConnectionManager : IConnectionManager
     {
         public const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
@@ -24,6 +19,9 @@ namespace MetricsAgent
             connection.Open();
             return connection;
         }
+        public string GetConnection()
+        {
+            return ConnectionString;
+        }
     }
-
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,11 +15,13 @@ namespace MetricsAgent.Controllers
     {
         private INetworkMetricsRepository repository;
         private readonly ILogger<NetworkAgentController> _logger;
-        public NetworkAgentController(INetworkMetricsRepository repository, ILogger<NetworkAgentController> logger)
+        private readonly IMapper mapper;
+        public NetworkAgentController(INetworkMetricsRepository repository, ILogger<NetworkAgentController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в NetworkAgentController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
@@ -27,9 +30,7 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
             fromTime = new DateTimeOffset(fromTime.UtcDateTime);
             toTime = new DateTimeOffset(toTime.UtcDateTime);
-
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
-
             var response = new AllNetworkMetricsResponse()
             {
                 Metrics = new List<NetworkMetricDto>()
@@ -37,7 +38,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<NetworkMetricDto>(metric));
             }
 
             return Ok(response);

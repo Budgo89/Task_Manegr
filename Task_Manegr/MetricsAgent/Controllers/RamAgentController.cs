@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,12 +15,13 @@ namespace MetricsAgent.Controllers
     {
         private IRamMetricsRepository repository;
         private readonly ILogger<RamAgentController> _logger;
-
-        public RamAgentController(IRamMetricsRepository repository, ILogger<RamAgentController> logger)
+        private readonly IMapper mapper;
+        public RamAgentController(IRamMetricsRepository repository, ILogger<RamAgentController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в RamAgentController");
             this.repository = repository;
+            this.mapper = mapper;
         }
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
         public IActionResult GetAgentFromAgent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
@@ -28,9 +30,7 @@ namespace MetricsAgent.Controllers
 
             fromTime = new DateTimeOffset(fromTime.UtcDateTime);
             toTime = new DateTimeOffset(toTime.UtcDateTime);
-
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
-
             var response = new AllRamMetricsResponse()
             {
                 Metrics = new List<RamMetricDto>()
@@ -38,7 +38,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new RamMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<RamMetricDto>(metric));
             }
 
             return Ok(response);

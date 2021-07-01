@@ -1,4 +1,6 @@
+using AutoMapper;
 using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,6 @@ namespace MetricsAgent
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             ConfigureSqlLiteConnection(services);
             services.AddScoped<ICpuMetricsRepository, CpuMetricsRepository>();
@@ -35,6 +36,9 @@ namespace MetricsAgent
             services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
             services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
+            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "MetricsAgent", Version = "v1" });
@@ -48,7 +52,7 @@ namespace MetricsAgent
             connection.Open();
             PrepareSchemaCpu(connection);
         }
-        // БД сгенерированы с Tue, 15 Jun 2021 06:00:00 GMT по Tue, 15 Jun 2021 10:00:00 GMT
+        // БД сгенерированы с Thu, 01 Jul 2021 06:00:00 GMT по Thu, 01 Jul 2021 10:00:00 GMT
 
         private void PrepareSchemaCpu(SQLiteConnection connection)
         {
@@ -59,19 +63,17 @@ namespace MetricsAgent
                 command.ExecuteNonQuery();
 
 
-                command.CommandText = @"CREATE TABLE metrics(id INTEGER PRIMARY KEY, value INT, time INT)";
+                command.CommandText = @"CREATE TABLE metrics(id INTEGER PRIMARY KEY, value INT64, time INT64)";
                 command.ExecuteNonQuery();
 
                 Random rand = new Random();
                 for (int i = 0; i < 50; i++)
                 {
-                    string comText = $"INSERT INTO metrics(value, time) VALUES({rand.Next(1,100)},{rand.Next(1623736800, 1623751200)})";
+                    string comText = $"INSERT INTO metrics(value, time) VALUES({rand.Next(1,100)},{rand.Next(1625119200, 1625133600)})";
                     command.CommandText = comText;
                     command.ExecuteNonQuery();
-                }
-              
+                }              
             }
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

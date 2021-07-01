@@ -1,3 +1,4 @@
+using AutoMapper;
 using MetricsAgent;
 using MetricsAgent.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,13 @@ namespace MetricsAgentTests
         private CpuAgentController controller;
         private Mock<ICpuMetricsRepository> repMock;
         private Mock<ILogger<CpuAgentController>> _loggerMock;
+        private Mock<IMapper> _mapper;
         public CpuAgentControllerUnitTests()
         {
             _loggerMock = new Mock<ILogger<CpuAgentController>>();
             repMock = new Mock<ICpuMetricsRepository>();
-            controller = new CpuAgentController(repMock.Object, _loggerMock.Object);
-            
+            _mapper = new Mock<IMapper>();
+            controller = new CpuAgentController(repMock.Object, _loggerMock.Object, _mapper.Object);            
         }
 
         [Fact]

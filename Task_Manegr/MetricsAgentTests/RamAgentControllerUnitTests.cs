@@ -1,4 +1,5 @@
-﻿using MetricsAgent.Controllers;
+﻿using AutoMapper;
+using MetricsAgent.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -16,12 +17,14 @@ namespace MetricsAgentTests
         private RamAgentController controller;
         private Mock<IRamMetricsRepository> repMock;
         private Mock<ILogger<RamAgentController>> _loggerMock;
+        private Mock<IMapper> _mapper;
 
         public RamAgentControllerUnitTests()
         {
             _loggerMock = new Mock<ILogger<RamAgentController>>();
             repMock = new Mock<IRamMetricsRepository>();
-            controller = new RamAgentController(repMock.Object, _loggerMock.Object);
+            _mapper = new Mock<IMapper>();
+            controller = new RamAgentController(repMock.Object, _loggerMock.Object, _mapper.Object);
         }
 
         [Fact]

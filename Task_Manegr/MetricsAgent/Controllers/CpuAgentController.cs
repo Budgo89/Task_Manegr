@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,11 +18,13 @@ namespace MetricsAgent.Controllers
     {
         private ICpuMetricsRepository repository;
         private readonly ILogger<CpuAgentController> _logger;
-        public CpuAgentController(ICpuMetricsRepository repository, ILogger<CpuAgentController> logger)
+        private readonly IMapper mapper;
+        public CpuAgentController(ICpuMetricsRepository repository, ILogger<CpuAgentController> logger, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CpuMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
 
@@ -31,9 +34,7 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
             fromTime = new DateTimeOffset(fromTime.UtcDateTime);
             toTime = new DateTimeOffset(toTime.UtcDateTime);
-
             var metrics = repository.GetByTimePeriod(fromTime, toTime);
-
             var response = new AllCpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricDto>()
@@ -41,7 +42,7 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricDto { Time = metric.Time, Value = metric.Value, Id = metric.Id });
+                response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
             }
 
             return Ok(response);
