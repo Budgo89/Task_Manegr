@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

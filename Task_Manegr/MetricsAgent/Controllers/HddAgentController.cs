@@ -44,12 +44,5 @@ namespace MetricsAgent.Controllers
             return Ok(response);
         }
     }
-    public class HddMetric
-    {
-        public int Id { get; set; }
 
-        public long Value { get; set; }
-
-        public DateTimeOffset Time { get; set; }
-    }
 }

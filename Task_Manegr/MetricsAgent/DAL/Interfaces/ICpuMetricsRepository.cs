@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Intercom.Core;
 using MetricsAgent.Controllers;
+using MetricsAgent.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -10,6 +12,6 @@ namespace MetricsAgent
 {
     public interface ICpuMetricsRepository : IRepository<CpuMetric>
     {
-        
+        void Create(CpuMetric cpuMetric);
     }
 }

@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent.Controllers
 {
-
-
     [Route("api/metrics/cpu")]
     [ApiController]
     public class CpuAgentController : ControllerBase
@@ -50,12 +48,5 @@ namespace MetricsAgent.Controllers
 
 
     }
-    public class CpuMetric
-    {
-        public int Id { get; set; }
 
-        public long Value { get; set; }
-
-        public DateTimeOffset Time { get; set; }
-    }
 }
