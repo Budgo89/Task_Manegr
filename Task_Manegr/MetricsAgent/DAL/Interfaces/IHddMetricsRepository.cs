@@ -9,5 +9,6 @@ namespace MetricsAgent.Controllers
 {
     public interface IHddMetricsRepository : IRepository<HddMetric>
     {
+        void Create(HddMetric hddMetric);
     }
 }

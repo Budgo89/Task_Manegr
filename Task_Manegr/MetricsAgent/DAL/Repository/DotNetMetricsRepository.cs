@@ -17,12 +17,32 @@ namespace MetricsAgent.DAL.Repository
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
+        public void Create(DotNetMetric item)
+        {
+            var ConnectionString = connectionManager.GetConnection();
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                //  запрос на вставку данных с плейсхолдерами для параметров
+                connection.Execute("INSERT INTO dotnetmetrics(value, time) VALUES(@value, @time)",
+                    // анонимный объект с параметрами запроса
+                    new
+                    {
+                        // value подставится на место "@value" в строке запроса
+                        // значение запишется из поля Value объекта item
+                        value = item.Value,
+
+                        // записываем в поле time количество секунд
+                        time = item.Time.ToUnixTimeSeconds()
+                    });
+            }
+        }
+
         public IList<DotNetMetric> GetByTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<DotNetMetric>("SELECT * FROM metrics WHERE (time >= @fromTime) AND (time <= @toTime)",
+                return connection.Query<DotNetMetric>("SELECT id, value, time FROM dotnetmetrics WHERE (time >= @fromTime) AND (time <= @toTime)",
                     new { fromTime = fromTime.ToUnixTimeSeconds(), toTime = toTime.ToUnixTimeSeconds() }).ToList();
             }
 

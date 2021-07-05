@@ -9,5 +9,6 @@ namespace MetricsAgent.Controllers
 {
     public interface INetworkMetricsRepository : IRepository<NetworkMetric>
     {
+        void Create(NetworkMetric networkMetric);
     }
 }

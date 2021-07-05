@@ -9,5 +9,6 @@ namespace MetricsAgent.Controllers
 {
     public interface IDotNetMetricsRepository : IRepository<DotNetMetric>
     {
+        void Create(DotNetMetric dotNetMetric);
     }
 }
