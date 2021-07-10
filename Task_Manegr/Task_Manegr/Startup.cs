@@ -1,4 +1,8 @@
 
+using FluentMigrator.Runner;
+using MetricsManager.Client;
+using MetricsManager.Jobs;
+using MetricsManager.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Polly;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
@@ -26,13 +31,37 @@ namespace MetricsManager
         }
 
         public IConfiguration Configuration { get; }
+        private const string ConnectionString = @"Data Source=metrics.db; Version=3;";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
-            
+            //???
+            services.AddHttpClient();
+            services.AddSingleton<IHddMetricRepository, HddMetricsRepository>();
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
+                 .AddTransientHttpErrorPolicy(p =>
+                p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
+            services.AddFluentMigratorCore()
+               .ConfigureRunner(rb => rb
+                   // добавляем поддержку SQLite 
+                   .AddSQLite()
+                   // устанавливаем строку подключения
+                   .WithGlobalConnectionString(ConnectionString)
+                   // подсказываем где искать классы с миграциями
+                   .ScanIn(typeof(Startup).Assembly).For.Migrations()
+               ).AddLogging(lb => lb
+                   .AddFluentMigratorConsole());
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            services.AddHostedService<QuartzHostedService>();
+            services.AddSingleton<HddMetricsJob>();
+            services.AddSingleton(new JobSchedule(
+                    jobType: typeof(HddMetricsJob),
+                    cronExpression: "0/5 * * * * ?"));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Task_Manegr", Version = "v1" });
@@ -40,7 +69,7 @@ namespace MetricsManager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
             if (env.IsDevelopment())
             {
@@ -59,6 +88,7 @@ namespace MetricsManager
             {
                 endpoints.MapControllers();
             });
+            migrationRunner.MigrateUp();
         }
     }
 }
