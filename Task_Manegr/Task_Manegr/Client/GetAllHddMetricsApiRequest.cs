@@ -6,13 +6,13 @@ namespace MetricsManager.Client
     {
         public DateTimeOffset FromTime { get; set; }
         public DateTimeOffset ToTime { get; set; }
-        public string ClientBaseAddress { get; set; }
+        public Uri ClientBaseAddress { get; set; }
 
-        public GetAllHddMetricsApiRequest(DateTimeOffset fromTime, DateTimeOffset toTime)
+        public GetAllHddMetricsApiRequest(DateTimeOffset fromTime, DateTimeOffset toTime, Uri clientBaseAddress)
         {
             FromTime = fromTime;
             ToTime = toTime;
-            ClientBaseAddress = "http://localhost:5000";
+            ClientBaseAddress = clientBaseAddress;
         }
     }
 }

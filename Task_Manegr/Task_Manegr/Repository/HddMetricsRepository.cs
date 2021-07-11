@@ -68,19 +68,7 @@ namespace MetricsManager.Repository
             
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                //для теста
-                //connection.Execute("INSERT INTO agents(AgentId, AgentUrl) VALUES(@AgentId, @AgentUrl)",
-                //        new
-                //        {
-                //            // value подставится на место "@value" в строке запроса
-                //            // значение запишется из поля Value объекта item
-                //            AgentId = 1,
-                //            // записываем в поле time количество секунд
-                //            AgentUrl = "http://localhost:5000"
-                //        });
-
-
-
+                
                 return connection.QuerySingle<int>("SELECT COUNT(1) FROM agents");
             }
         }

@@ -41,6 +41,7 @@ namespace MetricsManager
             //???
             services.AddHttpClient();
             services.AddSingleton<IHddMetricRepository, HddMetricsRepository>();
+            services.AddSingleton<IAgentsrRepository, AgentsRepository>();
             services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
                  .AddTransientHttpErrorPolicy(p =>
                 p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
@@ -56,6 +57,7 @@ namespace MetricsManager
                    .AddFluentMigratorConsole());
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            
             services.AddHostedService<QuartzHostedService>();
             services.AddSingleton<HddMetricsJob>();
             services.AddSingleton(new JobSchedule(

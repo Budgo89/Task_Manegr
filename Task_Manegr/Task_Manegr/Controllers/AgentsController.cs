@@ -14,16 +14,18 @@ namespace MetricsManager.Controllers
     public class AgentsController : ControllerBase
     {
         private readonly ILogger<AgentsController> _logger;
+        private IAgentsrRepository _agentsrRepository;
         public AgentsController(ILogger<AgentsController> logger, AgentInfo agentInfo, IAgentsrRepository AgentsrRepository)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в AgentsController");
+            _agentsrRepository = AgentsrRepository;
         }
 
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
-            var a = agentInfo;
+            _agentsrRepository.AgenRegister(agentInfo);
             _logger.LogInformation("Входные данные {agentInfo}", agentInfo);
             return Ok();
         }

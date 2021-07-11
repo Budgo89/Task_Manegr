@@ -26,5 +26,14 @@ namespace MetricsManager.Repository
                     });
             }
         }
+
+        public List<AgentInfo> ClientBaseAddress()
+        {
+            var ConnectionString = connectionManager.GetConnection();
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<AgentInfo>("SELECT AgentId, AgentUrl FROM agents").ToList();
+            }
+        }
     }
 }

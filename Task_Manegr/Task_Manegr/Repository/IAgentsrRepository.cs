@@ -1,7 +1,10 @@
-﻿namespace MetricsManager.Repository
+﻿using System.Collections.Generic;
+
+namespace MetricsManager.Repository
 {
     public interface IAgentsrRepository
     {
         void AgenRegister(AgentInfo agentInfo);
+        public List<AgentInfo> ClientBaseAddress();
     }
 }
