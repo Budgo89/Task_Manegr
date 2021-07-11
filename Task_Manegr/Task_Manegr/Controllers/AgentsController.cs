@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MetricsManager.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,8 +14,7 @@ namespace MetricsManager.Controllers
     public class AgentsController : ControllerBase
     {
         private readonly ILogger<AgentsController> _logger;
-
-        public AgentsController(ILogger<AgentsController> logger)
+        public AgentsController(ILogger<AgentsController> logger, AgentInfo agentInfo, IAgentsrRepository AgentsrRepository)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в AgentsController");
@@ -23,6 +23,7 @@ namespace MetricsManager.Controllers
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
+            var a = agentInfo;
             _logger.LogInformation("Входные данные {agentInfo}", agentInfo);
             return Ok();
         }

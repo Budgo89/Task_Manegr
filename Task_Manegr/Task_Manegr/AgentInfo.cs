@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace MetricsManager
 {
-    public class AgentInfo
+    public class AgentInfo : IAgentInfo
     {
-        public int AgentId { get; }
+        public int AgentId { get; set; }
 
-        public Uri AgentAddress { get; }
+        public Uri AgentAddress { get; set; }
     }
 }

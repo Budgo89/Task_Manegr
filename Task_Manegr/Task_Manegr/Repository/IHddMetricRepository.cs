@@ -8,5 +8,6 @@ namespace MetricsManager.Repository
     {
         public DateTimeOffset FromTime();
         public void Create(List<HddMetrics> Metrics);
+        public int CountAgentHdd();
     }
 }

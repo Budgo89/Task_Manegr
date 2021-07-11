@@ -3,6 +3,7 @@ using MetricsManager.Repository;
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace MetricsManager.Jobs
         private DateTimeOffset _fromTime;
         //public AllHddMetricsApiResponse _allHddMetricsApiResponse;
         public IMetricsAgentClient _metricsAgentClient;
+        private ConnectionManager connectionManager = new ConnectionManager();
 
         public HddMetricsJob(IHddMetricRepository repository, IMetricsAgentClient metricsAgentClient)
         {
@@ -26,15 +28,14 @@ namespace MetricsManager.Jobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            GetAllHddMetricsApiRequest getAllHddMetricsApiRequest = new GetAllHddMetricsApiRequest(_fromTime, _toTime);
-            var _allHddMetricsApiResponse = _metricsAgentClient.GetAllHddMetrics(getAllHddMetricsApiRequest);
-            //var response = new AllHddMetricsApiResponse()
-            //{
-            //    Metrics = new List<HddMetrics>()
-            //};
-            var response = _allHddMetricsApiResponse;
-            _repository.Create(response.Metrics);
-
+            var countAgentHdd = _repository.CountAgentHdd();
+            if (countAgentHdd != 0)
+            {
+                GetAllHddMetricsApiRequest getAllHddMetricsApiRequest = new GetAllHddMetricsApiRequest(_fromTime, _toTime);
+                var _allHddMetricsApiResponse = _metricsAgentClient.GetAllHddMetrics(getAllHddMetricsApiRequest);
+                var response = _allHddMetricsApiResponse;
+                _repository.Create(response.Metrics);
+            }
             return Task.CompletedTask;
         }
     }
