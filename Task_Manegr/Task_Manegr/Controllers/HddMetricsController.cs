@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using MetricsManager.Client;
+using MetricsManager.DAL.Models;
 using MetricsManager.Repository;
-using Microsoft.AspNetCore.Http;
+using MetricsManager.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsManager.Controllers
 {
@@ -15,8 +13,8 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class HddMetricsController : ControllerBase
     {
-        private readonly ILogger<HddMetricsController> _logger;
         private IHddMetricRepository _repository;
+        private readonly ILogger<HddMetricsController> _logger;
         private readonly IMapper _mapper;
         public HddMetricsController(ILogger<HddMetricsController> logger, IHddMetricRepository repository, IMapper mapper)
         {

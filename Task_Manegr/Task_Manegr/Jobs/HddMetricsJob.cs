@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MetricsManager.Client;
+using MetricsManager.DAL.Models;
 using MetricsManager.Repository;
+using MetricsManager.Responses;
 using Quartz;
 using System;
 using System.Collections.Generic;

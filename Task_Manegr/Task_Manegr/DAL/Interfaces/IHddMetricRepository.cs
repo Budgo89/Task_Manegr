@@ -1,4 +1,5 @@
 ﻿using MetricsManager.Client;
+using MetricsManager.DAL.Models;
 using System;
 using System.Collections.Generic;
 

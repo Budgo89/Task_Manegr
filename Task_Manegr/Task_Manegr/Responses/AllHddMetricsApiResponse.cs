@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MetricsManager.DAL.Models;
+using System.Collections.Generic;
 
-namespace MetricsManager.Client
+namespace MetricsManager.Responses
 {
     public class AllHddMetricsApiResponse
     {

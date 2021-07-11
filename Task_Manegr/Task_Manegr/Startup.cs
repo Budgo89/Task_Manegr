@@ -4,6 +4,7 @@ using FluentMigrator.Runner;
 using MetricsManager.Client;
 using MetricsManager.Jobs;
 using MetricsManager.Repository;
+using MetricsManager.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
