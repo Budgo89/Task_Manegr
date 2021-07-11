@@ -1,4 +1,5 @@
 
+using AutoMapper;
 using FluentMigrator.Runner;
 using MetricsManager.Client;
 using MetricsManager.Jobs;
@@ -40,11 +41,6 @@ namespace MetricsManager
             services.AddControllers();
             //???
             services.AddHttpClient();
-            services.AddSingleton<IHddMetricRepository, HddMetricsRepository>();
-            services.AddSingleton<IAgentsrRepository, AgentsRepository>();
-            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
-                 .AddTransientHttpErrorPolicy(p =>
-                p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
             services.AddFluentMigratorCore()
                .ConfigureRunner(rb => rb
                    // добавляем поддержку SQLite 
@@ -55,6 +51,16 @@ namespace MetricsManager
                    .ScanIn(typeof(Startup).Assembly).For.Migrations()
                ).AddLogging(lb => lb
                    .AddFluentMigratorConsole());
+            services.AddSingleton<IHddMetricRepository, HddMetricsRepository>();
+            services.AddSingleton<IAgentsrRepository, AgentsRepository>();
+            services.AddSingleton<AllHddMetricsApiResponse>();
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
+                 .AddTransientHttpErrorPolicy(p =>
+                p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
+            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddSingleton<ConnectionManager>();
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             

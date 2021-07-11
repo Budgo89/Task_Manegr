@@ -62,14 +62,18 @@ namespace MetricsManager.Repository
                 }
             }
         }
-        public int CountAgentHdd()
+
+        public IList<HddMetrics> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
-            
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                
-                return connection.QuerySingle<int>("SELECT COUNT(1) FROM agents");
+                return connection.Query<HddMetrics>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (agentId = @agentId) AND (time >= @fromTime) AND (time <= @toTime)", 
+                    new 
+                    { agentId = agentId, 
+                        fromTime = fromTime.ToUnixTimeSeconds(), 
+                        toTime = toTime.ToUnixTimeSeconds() 
+                    }).ToList();
             }
         }
     }

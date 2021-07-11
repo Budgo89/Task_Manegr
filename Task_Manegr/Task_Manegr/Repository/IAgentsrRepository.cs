@@ -6,5 +6,6 @@ namespace MetricsManager.Repository
     {
         void AgenRegister(AgentInfo agentInfo);
         public List<AgentInfo> ClientBaseAddress();
+        public int CountAgent();
     }
 }

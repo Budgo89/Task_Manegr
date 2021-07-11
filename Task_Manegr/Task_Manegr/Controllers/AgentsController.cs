@@ -15,7 +15,7 @@ namespace MetricsManager.Controllers
     {
         private readonly ILogger<AgentsController> _logger;
         private IAgentsrRepository _agentsrRepository;
-        public AgentsController(ILogger<AgentsController> logger, AgentInfo agentInfo, IAgentsrRepository AgentsrRepository)
+        public AgentsController(ILogger<AgentsController> logger, IAgentsrRepository AgentsrRepository)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в AgentsController");
