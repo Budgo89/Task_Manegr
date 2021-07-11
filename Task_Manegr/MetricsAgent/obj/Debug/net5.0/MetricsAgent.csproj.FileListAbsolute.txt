@@ -83,3 +83,4 @@ D:\Програмирование\C#\Task_Manegr\Task_Manegr\MetricsAgent\bin\De
 D:\Програмирование\C#\Task_Manegr\Task_Manegr\MetricsAgent\bin\Debug\net5.0\Quartz.dll
 D:\Програмирование\C#\Task_Manegr\Task_Manegr\MetricsAgent\bin\Debug\net5.0\System.Diagnostics.PerformanceCounter.dll
 D:\Програмирование\C#\Task_Manegr\Task_Manegr\MetricsAgent\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll
+D:\Програмирование\C#\Task_Manegr\Task_Manegr\MetricsAgent\bin\Debug\net5.0\nlog.config
