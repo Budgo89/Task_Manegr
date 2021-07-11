@@ -24,19 +24,19 @@ namespace MetricsManager.Client
             var fromParameter = request.FromTime;
             var toParameter = request.ToTime;
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.ClientBaseAddress}/api/metrics/hdd/left/from/{fromParameter}/to/{toParameter}");
-            //try
-            //{
+            try
+            {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
                 var b = responseStream;
                 var a = JsonSerializer.DeserializeAsync<AllHddMetricsApiResponse>(responseStream).Result;
                 return a;
-            //}
-            //catch (Exception ex)
-            //{
-            //    //_logger.LogError(ex.Message);
-            //    return null;
-            //}            
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex.Message);
+                return null;
+            }
         }
 
         //public AllRamMetricsApiResponse GetAllRamMetrics(GetAllRamMetricsApiRequest request)
