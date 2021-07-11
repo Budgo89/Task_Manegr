@@ -1,5 +1,6 @@
 ﻿using MetricsManager;
 using MetricsManager.Controllers;
+using MetricsManager.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -16,10 +17,12 @@ namespace MetricsManagerTests
     {
         private AgentsController controller;
         private Mock<ILogger<AgentsController>> _loggerMock;
+        private Mock<IAgentsrRepository> _agentsrRepository;
         public AgentsControllerUnitTests()
         {
             _loggerMock = new Mock<ILogger<AgentsController>>();
-            controller = new AgentsController(_loggerMock.Object);
+            _agentsrRepository = new Mock<IAgentsrRepository>();
+            controller = new AgentsController(_loggerMock.Object, _agentsrRepository.Object);
         }
         [Fact]
         public void RegisterAgent_ReturnsOk()

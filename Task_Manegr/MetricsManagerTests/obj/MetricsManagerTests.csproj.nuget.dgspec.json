@@ -1,0 +1,314 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsManagerTests\\MetricsManagerTests.csproj": {}
+  },
+  "projects": {
+    "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsAgent\\MetricsAgent.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsAgent\\MetricsAgent.csproj",
+        "projectName": "MetricsAgent",
+        "projectPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsAgent\\MetricsAgent.csproj",
+        "packagesPath": "C:\\Users\\Budgo\\.nuget\\packages\\",
+        "outputPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsAgent\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Budgo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.90, )"
+            },
+            "FluentMigrator": {
+              "target": "Package",
+              "version": "[3.2.17, )"
+            },
+            "FluentMigrator.Runner": {
+              "target": "Package",
+              "version": "[3.2.17, )"
+            },
+            "FluentMigrator.Runner.SQLite": {
+              "target": "Package",
+              "version": "[3.2.17, )"
+            },
+            "Intercom.Dotnet.Client": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.10, )"
+            },
+            "NLog.Web.AspNetCore": {
+              "target": "Package",
+              "version": "[4.12.0, )"
+            },
+            "Quartz": {
+              "target": "Package",
+              "version": "[3.3.2, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.4, )"
+            },
+            "System.Data.SQLite.Core": {
+              "target": "Package",
+              "version": "[1.0.114.3, )"
+            },
+            "System.Diagnostics.PerformanceCounter": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsManagerTests\\MetricsManagerTests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsManagerTests\\MetricsManagerTests.csproj",
+        "projectName": "MetricsManagerTests",
+        "projectPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsManagerTests\\MetricsManagerTests.csproj",
+        "packagesPath": "C:\\Users\\Budgo\\.nuget\\packages\\",
+        "outputPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsManagerTests\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Budgo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\Task_Manegr\\MetricsManager.csproj": {
+                "projectPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\Task_Manegr\\MetricsManager.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.10.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.16.1, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.3, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\Task_Manegr\\MetricsManager.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\Task_Manegr\\MetricsManager.csproj",
+        "projectName": "MetricsManager",
+        "projectPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\Task_Manegr\\MetricsManager.csproj",
+        "packagesPath": "C:\\Users\\Budgo\\.nuget\\packages\\",
+        "outputPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\Task_Manegr\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Budgo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsAgent\\MetricsAgent.csproj": {
+                "projectPath": "D:\\Програмирование\\C#\\Task_Manegr\\Task_Manegr\\MetricsAgent\\MetricsAgent.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.0.90, )"
+            },
+            "FluentMigrator": {
+              "target": "Package",
+              "version": "[3.2.17, )"
+            },
+            "FluentMigrator.Runner": {
+              "target": "Package",
+              "version": "[3.2.17, )"
+            },
+            "FluentMigrator.Runner.SQLite": {
+              "target": "Package",
+              "version": "[3.2.17, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.Extensions.Http.Polly": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[4.7.10, )"
+            },
+            "NLog.Web.AspNetCore": {
+              "target": "Package",
+              "version": "[4.12.0, )"
+            },
+            "Quartz": {
+              "target": "Package",
+              "version": "[3.3.2, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.4, )"
+            },
+            "System.Data.SQLite.Core": {
+              "target": "Package",
+              "version": "[1.0.114.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

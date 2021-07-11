@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace MetricsAgentTests
-{
+{ 
     public class RamAgentControllerUnitTests
     {
         private RamAgentController controller;
