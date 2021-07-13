@@ -24,11 +24,8 @@ namespace MetricsAgent.Jobs
         }
 
         public Task Execute(IJobExecutionContext context)
-        {
-            // получаем значение занятости CPU
-            var hddUsageInPercents = Convert.ToInt32(_HddCounter.NextValue());
-
-            // узнаем когда мы сняли значение метрики.
+        {            
+            var hddUsageInPercents = Convert.ToInt32(_HddCounter.NextValue());           
             var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
             // теперь можно записать что-то при помощи репозитория

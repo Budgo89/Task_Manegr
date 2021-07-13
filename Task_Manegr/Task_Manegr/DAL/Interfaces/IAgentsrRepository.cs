@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using MetricsManager.Client;
+using System.Collections.Generic;
 
 namespace MetricsManager.Repository
 {
     public interface IAgentsrRepository
     {
         void AgenRegister(AgentInfo agentInfo);
-        public List<AgentInfo> ClientBaseAddress();
+        public List<Agent> ClientBaseAddress();
         public int CountAgent();
     }
 }

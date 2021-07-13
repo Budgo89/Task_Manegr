@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MetricsManager.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -21,22 +22,23 @@ namespace MetricsManager.Repository
             using (var connection = new SQLiteConnection(ConnectionString))
             {
                 //  запрос на вставку данных с плейсхолдерами для параметров
-                connection.Execute("INSERT INTO agents(agentId, agentUrl) VALUES(@agentId, @agentUrl)",
+                connection.Execute("INSERT INTO agents(agentId, agentUrl, enabled) VALUES(@agentId, @agentUrl, @enabled)",
                     // анонимный объект с параметрами запроса
                     new
                     {
                         agentId = agentInfo.AgentId,                        
-                        agentUrl = agentInfo.AgentAddress.ToString()
+                        agentUrl = agentInfo.AgentAddress.ToString(),
+                        enabled = true
                     });
             }
         }
 
-        public List<AgentInfo> ClientBaseAddress()
+        public List<Agent> ClientBaseAddress()
         {
             var ConnectionString = _connectionManager.GetConnection();
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<AgentInfo>("SELECT AgentId, AgentUrl FROM agents").ToList();
+                return connection.Query<Agent>("SELECT AgentId, AgentUrl FROM agents").ToList();
             }
         }
         public int CountAgent()
@@ -45,8 +47,7 @@ namespace MetricsManager.Repository
 
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-
-                return connection.QuerySingle<int>("SELECT COUNT(1) FROM agents");
+                return connection.QuerySingle<int>("SELECT COUNT(1) FROM agents WHERE enabled = true");
             }
         }
     }

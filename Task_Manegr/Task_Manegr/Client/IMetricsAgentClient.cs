@@ -10,7 +10,7 @@ namespace MetricsManager.Client
     {
         //AllRamMetricsApiResponse GetAllRamMetrics(GetAllRamMetricsApiRequest request);
 
-        AllHddMetricsApiResponse GetAllHddMetrics(GetAllHddMetricsApiRequest request);
+       AllHddMetricsApiResponse GetAllHddMetrics(GetAllHddMetricsApiRequest request);
 
         //AllDonNetMetricsApiResponse GetDonNetMetrics(GetAllDonNetHeapMetrisApiRequest request);
 

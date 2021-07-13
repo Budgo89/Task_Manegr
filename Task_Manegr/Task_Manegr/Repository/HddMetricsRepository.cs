@@ -45,38 +45,54 @@ namespace MetricsManager.Repository
             
         }
 
-        public void Create(List<HddMetrics> Metrics) 
+        public void Create(List<HddMetricDto> Metrics) 
         {
             var ConnectionString = connectionManager.GetConnection();
             foreach (var item in Metrics)
             {
                 using (var connection = new SQLiteConnection(ConnectionString))
                 {
-                    connection.Execute("INSERT INTO hddmetrics(value, time) VALUES(@value, @time)",
+                    connection.Execute("INSERT INTO hddmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
                         new
                         {
                             // value подставится на место "@value" в строке запроса
                             // значение запишется из поля Value объекта item
                             value = item.Value,
                             // записываем в поле time количество секунд
-                            time = item.Time.ToUnixTimeSeconds()
+                            time = item.Time.ToUnixTimeSeconds(),
+                            agentId = item.AgentId
                         });
                 }
             }
         }
 
-        public IList<HddMetrics> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        public IList<HddMetricDto> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<HddMetrics>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (agentId = @agentId) AND (time >= @fromTime) AND (time <= @toTime)", 
+                return connection.Query<HddMetricDto>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)", 
                     new 
-                    { agentId = agentId, 
+                    {                       
                         fromTime = fromTime.ToUnixTimeSeconds(), 
-                        toTime = toTime.ToUnixTimeSeconds() 
+                        toTime = toTime.ToUnixTimeSeconds(),
+                        agentId = agentId
                     }).ToList();
             }
         }
+
+        //public void Create(HddMetrics item)
+        //{
+        //    var ConnectionString = connectionManager.GetConnection();
+        //    using (var connection = new SQLiteConnection(ConnectionString))
+        //    {
+        //        connection.Execute("INSERT INTO hddmetrics(value, time) VALUES(@value, @time)",
+        //            new
+        //            {
+        //                value = item.Value,
+        //                time = item.Time.ToUnixTimeSeconds()
+        //            });
+        //    }
+        //}
     }
 }

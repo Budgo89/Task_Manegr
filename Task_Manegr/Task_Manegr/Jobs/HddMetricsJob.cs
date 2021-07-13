@@ -2,12 +2,9 @@
 using MetricsManager.Client;
 using MetricsManager.DAL.Models;
 using MetricsManager.Repository;
-using MetricsManager.Responses;
 using Quartz;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MetricsManager.Jobs
@@ -20,42 +17,49 @@ namespace MetricsManager.Jobs
         public IMetricsAgentClient _metricsAgentClient;
         private IAgentsrRepository _AgentsrRepository;
         private readonly IMapper _mapper;
-        private AllHddMetricsApiResponse _allHddMetricsApiResponse;
+        //private AllHddMetricsApiResponse _allHddMetricsApiResponse;
 
-        public HddMetricsJob(IHddMetricRepository repository, IMetricsAgentClient metricsAgentClient, IAgentsrRepository AgentsrRepository, IMapper mapper, AllHddMetricsApiResponse allHddMetricsApiResponse)
+        public HddMetricsJob(IHddMetricRepository repository, IMetricsAgentClient metricsAgentClient, IAgentsrRepository AgentsrRepository, IMapper mapper)
         {
             _repository = repository;
-            _toTime = DateTimeOffset.UtcNow;
-            _fromTime = _repository.FromTime();
+
             _metricsAgentClient = metricsAgentClient;
             _AgentsrRepository = AgentsrRepository;
             _mapper = mapper;
-            _allHddMetricsApiResponse = allHddMetricsApiResponse;
         }
 
         public Task Execute(IJobExecutionContext context)
         {
+            _toTime = DateTimeOffset.UtcNow;            
+            _fromTime = _repository.FromTime();
             var countAgentHdd = _AgentsrRepository.CountAgent();
             if (countAgentHdd != 0)
             {
                 var clientBaseAddress = _AgentsrRepository.ClientBaseAddress();
                 for (int i = 0; i < clientBaseAddress.Count; i++)
                 {
-                    GetAllHddMetricsApiRequest getAllHddMetricsApiRequest = new GetAllHddMetricsApiRequest(_fromTime, _toTime, clientBaseAddress[i].AgentAddress);
-                    //Временная заглушка
-            //GetAllHddMetricsApiRequest getAllHddMetricsApiRequest = new GetAllHddMetricsApiRequest(_fromTime, _toTime, "http://localhost:5000");
-            _allHddMetricsApiResponse = _metricsAgentClient.GetAllHddMetrics(getAllHddMetricsApiRequest);
-                    var response = new AllHddMetricsApiResponse
+                    var _allHddMetricsApiResponse = _metricsAgentClient.GetAllHddMetrics(new GetAllHddMetricsApiRequest
                     {
-                        Metrics = new List<HddMetrics>()
-                    };
+                        FromTime = _fromTime,
+                        ToTime = _toTime,
+                        ClientBaseAddress = clientBaseAddress[i].AgentUrl
+                    });
+                    var MetricsDto = new List<HddMetricDto>();
                     foreach (var metric in _allHddMetricsApiResponse.Metrics)
                     {
-                        response.Metrics.Add(_mapper.Map<HddMetrics>(metric));
+                        MetricsDto.Add(new HddMetricDto
+                        {
+                            Id = metric.Id,
+                            Value = metric.Value,
+                            Time = metric.Time,
+                            AgentId = clientBaseAddress[i].AgentId
+                        });
+                        
+                        //_repository.Create(_mapper.Map<HddMetrics>(metric));
                     }
-                    _repository.Create(response.Metrics);
+                    _repository.Create(MetricsDto);
         }
-
+                
     }
             return Task.CompletedTask;
         }

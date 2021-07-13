@@ -38,9 +38,7 @@ namespace MetricsManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
-            //???
             services.AddHttpClient();
             services.AddFluentMigratorCore()
                .ConfigureRunner(rb => rb
@@ -63,8 +61,7 @@ namespace MetricsManager
             services.AddSingleton(mapper);
             services.AddSingleton<ConnectionManager>();
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
-            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-            
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();            
             services.AddHostedService<QuartzHostedService>();
             services.AddSingleton<HddMetricsJob>();
             services.AddSingleton(new JobSchedule(

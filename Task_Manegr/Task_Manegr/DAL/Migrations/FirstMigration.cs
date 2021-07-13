@@ -49,7 +49,8 @@ namespace MetricsManager.Migrations
             Create.Table("agents")
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("AgentId").AsInt32()
-                .WithColumn("AgentUrl").AsString().ForeignKey("agents", "AgentId");
+                .WithColumn("AgentUrl").AsString().ForeignKey("agents", "AgentId")
+                .WithColumn("Enabled").AsBoolean();
         }
     }
 }
