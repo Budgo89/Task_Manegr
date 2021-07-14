@@ -5,31 +5,31 @@ using MetricsManager.Repository;
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MetricsManager.Jobs
 {
     [DisallowConcurrentExecution]
-    public class HddMetricsJob : IJob
+    public class CpuMetricsJob : IJob
     {
-        private IHddMetricRepository _repository;
+        private ICpuMetricRepository _repository;
         private DateTimeOffset _toTime;
         private DateTimeOffset _fromTime;
-        public IMetricsAgentClient _metricsAgentClient;
+        private IMetricsAgentClient _metricsAgentClient;
         private IAgentsrRepository _AgentsrRepository;
         private readonly IMapper _mapper;
 
-        public HddMetricsJob(IHddMetricRepository repository, IMetricsAgentClient metricsAgentClient, IAgentsrRepository AgentsrRepository, IMapper mapper)
+        public CpuMetricsJob(ICpuMetricRepository repository, IMetricsAgentClient metricsAgentClient, IAgentsrRepository AgentsrRepository, IMapper mapper)
         {
             _repository = repository;
             _metricsAgentClient = metricsAgentClient;
             _AgentsrRepository = AgentsrRepository;
             _mapper = mapper;
         }
-
         public Task Execute(IJobExecutionContext context)
         {
-            _toTime = DateTimeOffset.UtcNow;            
+            _toTime = DateTimeOffset.UtcNow;
             _fromTime = _repository.FromTime();
             var countAgentHdd = _AgentsrRepository.CountAgent();
             if (countAgentHdd != 0)
@@ -37,16 +37,16 @@ namespace MetricsManager.Jobs
                 var clientBaseAddress = _AgentsrRepository.ClientBaseAddress();
                 for (int i = 0; i < clientBaseAddress.Count; i++)
                 {
-                    var _allHddMetricsApiResponse = _metricsAgentClient.GetAllHddMetrics(new GetAllHddMetricsApiRequest
+                    var _allCpuMetricsApiResponse = _metricsAgentClient.GetAllCpuMetrics(new GetAllCpuMetricsApiRequest
                     {
                         FromTime = _fromTime,
                         ToTime = _toTime,
                         ClientBaseAddress = clientBaseAddress[i].AgentUrl
                     });
-                    var MetricsDto = new List<HddMetricDto>();
-                    foreach (var metric in _allHddMetricsApiResponse.Metrics)
+                    var MetricsDto = new List<CpuMetricDto>();
+                    foreach (var metric in _allCpuMetricsApiResponse.Metrics)
                     {
-                        MetricsDto.Add(new HddMetricDto
+                        MetricsDto.Add(new CpuMetricDto
                         {
                             Id = metric.Id,
                             Value = metric.Value,
@@ -56,7 +56,7 @@ namespace MetricsManager.Jobs
                     }
                     _repository.Create(MetricsDto);
                 }
-                
+
             }
             return Task.CompletedTask;
         }

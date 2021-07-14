@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using MetricsManager.Client;
+using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MetricsManager
 {
@@ -18,6 +15,10 @@ namespace MetricsManager
             CreateMap<NetworkMetric, NetworkMetricDto>();
             CreateMap<RamMetric, RamMetricDto>();
             CreateMap<HddMetricInquiry, HddMetricDto>();
+            CreateMap<CpuMetricInquiry, CpuMetricDto>();
+            CreateMap<DotNetMetricInquiry, DotNetMetricDto>();
+            CreateMap<NetworkMetricInquiry, NetworkMetricDto>();
+            CreateMap<RamMetricInquiry, RamMetricDto>();
             CreateMap<long, DateTimeOffset>().ConvertUsing(new LongToDateTimeOffsetConverter());
             CreateMap<DateTimeOffset, long>().ConvertUsing(new DateTimeOffsetToLongConverter());
         }

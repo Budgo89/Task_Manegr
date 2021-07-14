@@ -48,8 +48,9 @@ namespace MetricsManager.Controllers
         [HttpGet("receiving")]
         public IActionResult ReceivingAgentById()
         {
+            var receiving = _agentsrRepository.Receiving();
             _logger.LogInformation("Входные данные");
-            return Ok();
+            return Ok(receiving);
         }
     }
 

@@ -9,6 +9,7 @@ namespace MetricsManager.Repository
         public List<Agent> ClientBaseAddress();
         public int CountAgent();
         public void EnableAgentById(int agentId);
-        public void DisableAgentById(int agentId);        
+        public void DisableAgentById(int agentId);
+        public List<Agent> Receiving();
     }
 }

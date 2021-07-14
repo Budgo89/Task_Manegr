@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using MetricsManager.Client;
 using MetricsManager.DAL.Models;
-using MetricsManager.Responses;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -10,15 +9,13 @@ using System.Threading.Tasks;
 
 namespace MetricsManager.Repository
 {
-    public class HddMetricsRepository : IHddMetricRepository
+    public class CpuMetricRepository : ICpuMetricRepository
     {
         private ConnectionManager connectionManager;
         public IMetricsAgentClient _metricsAgentClient;
-        public AllHddMetricsApiResponse _allHddMetricsApiResponse;
+        public AllCpuMetricsApiResponse _allHddMetricsApiResponse;
         private IAgentsrRepository _AgentsrRepository;
-
-
-        public HddMetricsRepository(ConnectionManager ConnectionManager, IAgentsrRepository  AgentsrRepository)
+        public CpuMetricRepository(ConnectionManager ConnectionManager, IAgentsrRepository AgentsrRepository)
         {
             connectionManager = ConnectionManager;
             _AgentsrRepository = AgentsrRepository;
@@ -29,24 +26,24 @@ namespace MetricsManager.Repository
             long time;
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                var count = connection.QuerySingle<int>("SELECT COUNT(1) FROM hddmetrics");
+                var count = connection.QuerySingle<int>("SELECT COUNT(1) FROM cpumetrics");
                 if (count == 0)
                 {
                     time = 0;
                 }
-                else time = connection.QuerySingle<long>("SELECT MAX(Time) FROM hddmetrics");
+                else time = connection.QuerySingle<long>("SELECT MAX(Time) FROM cpumetrics");
 
                 return DateTimeOffset.FromUnixTimeSeconds(time);
             }
         }
-        public void Create(List<HddMetricDto> Metrics) 
+        public void Create(List<CpuMetricDto> Metrics)
         {
             var ConnectionString = connectionManager.GetConnection();
             foreach (var item in Metrics)
             {
                 using (var connection = new SQLiteConnection(ConnectionString))
                 {
-                    connection.Execute("INSERT INTO hddmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
+                    connection.Execute("INSERT INTO cpumetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
                         new
                         {
                             // value подставится на место "@value" в строке запроса
@@ -59,8 +56,7 @@ namespace MetricsManager.Repository
                 }
             }
         }
-
-        public IList<HddMetricInquiry> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        public IList<CpuMetricInquiry> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
             bool enabledAgent;
@@ -73,7 +69,7 @@ namespace MetricsManager.Repository
             {
                 using (var connection = new SQLiteConnection(ConnectionString))
                 {
-                    return connection.Query<HddMetricInquiry>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
+                    return connection.Query<CpuMetricInquiry>("SELECT Id, Value, Time, agentId FROM cpumetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
                         new
                         {
                             fromTime = fromTime.ToUnixTimeSeconds(),
@@ -82,22 +78,20 @@ namespace MetricsManager.Repository
                         }).ToList();
                 }
             }
-            return new List<HddMetricInquiry>();
+            return new List<CpuMetricInquiry>();
         }
-
-        public IList<HddMetricInquiry> GetByAllTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime) 
+        public IList<CpuMetricInquiry> GetByAllTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
             var clientBaseAddress = _AgentsrRepository.ClientBaseAddress();
-
             if (clientBaseAddress.Count != 0)
             {
-                var listMetrics = new List<HddMetricInquiry>();
+                var listMetrics = new List<CpuMetricInquiry>();
                 for (int i = 0; i < clientBaseAddress.Count; i++)
                 {
                     using (var connection = new SQLiteConnection(ConnectionString))
                     {
-                        listMetrics.AddRange(connection.Query<HddMetricInquiry>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
+                        listMetrics.AddRange(connection.Query<CpuMetricInquiry>("SELECT Id, Value, Time, agentId FROM cpumetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
                             new
                             {
                                 fromTime = fromTime.ToUnixTimeSeconds(),
@@ -108,7 +102,7 @@ namespace MetricsManager.Repository
                 }
                 return listMetrics;
             }
-            return new List<HddMetricInquiry>();
+            return new List<CpuMetricInquiry>();
         }
     }
 }

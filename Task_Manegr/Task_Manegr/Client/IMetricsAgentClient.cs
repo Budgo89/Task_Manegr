@@ -12,10 +12,10 @@ namespace MetricsManager.Client
 
         AllHddMetricsApiResponse GetAllHddMetrics(GetAllHddMetricsApiRequest request);
 
-        AllDonNetMetricsApiResponse GetDonNetMetrics(GetAllDonNetHeapMetrisApiRequest request);
+        AllDotNetMetricsApiResponse GetAllDotNetMetrics(GetAllDotNetHeapMetrisApiRequest request);
 
-        AllCpuMetricsApiResponse GetCpuMetrics(GetAllCpuMetricsApiRequest request);
+        AllCpuMetricsApiResponse GetAllCpuMetrics(GetAllCpuMetricsApiRequest request);
 
-        AllNetworkMetricsApiRespodse GetNetworkMetrics(GetAllNetworkMetricsApiRespodse request);
+        AllNetworkMetricsApiRespodse GetAllNetworkMetrics(GetAllNetworkMetricsApiRespodse request);
     }
 }

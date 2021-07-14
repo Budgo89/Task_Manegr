@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using MetricsManager.Controllers;
+using MetricsManager.DAL.Models;
 using MetricsManager.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MetricsManagerTests
@@ -32,6 +30,7 @@ namespace MetricsManagerTests
             var agentId = 1;
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+            _repository.Setup(repository => repository.GetByTimePeriod(agentId, fromTime, toTime)).Returns(new List<HddMetricInquiry>());
             var result = controller.GetMetricsFromAgent(agentId, fromTime, toTime);
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
@@ -40,7 +39,7 @@ namespace MetricsManagerTests
         {
             var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
             var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
-
+            _repository.Setup(repository => repository.GetByAllTimePeriod(fromTime, toTime)).Returns(new List<HddMetricInquiry>());
             var result = controller.GetMetricsFromAllCluster(fromTime, toTime);
 
             _ = Assert.IsAssignableFrom<IActionResult>(result);

@@ -3,11 +3,11 @@ using MetricsManager.Repository;
 using System;
 using System.Collections.Generic;
 
-namespace MetricsManager
+namespace MetricsManager.Jobs
 {
-    public interface ICpuMetricRepository : IRepository<CpuMetricInquiry>
+    public interface INetworkMetricRepository : IRepository<NetworkMetricInquiry>
     {
         public DateTimeOffset FromTime();
-        public void Create(List<CpuMetricDto> Metrics);
+        public void Create(List<NetworkMetricDto> Metrics);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MetricsManager.Client
 {
-    public class GetAllDonNetHeapMetrisApiRequest
+    public class GetAllDotNetHeapMetrisApiRequest
     {
         public DateTimeOffset FromTime { get; set; }
         public DateTimeOffset ToTime { get; set; }

@@ -2,7 +2,7 @@
 
 namespace MetricsManager.Client
 {
-    public class AllDonNetMetricsApiResponse
+    public class AllDotNetMetricsApiResponse
     {
         public List<DonNetMetrics> Metrics { get; set; }
     }

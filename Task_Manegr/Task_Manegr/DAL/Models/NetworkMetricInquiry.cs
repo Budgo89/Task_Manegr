@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace MetricsManager.DAL.Models
 {
-    public class DotNetMetricDto
+    public class NetworkMetricInquiry
     {
         public int Id { get; set; }
 
         public long Value { get; set; }
 
-        public DateTimeOffset Time { get; set; }
+        public long Time { get; set; }
 
         public int AgentId { get; set; }
     }

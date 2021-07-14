@@ -78,5 +78,14 @@ namespace MetricsManager.Repository
                     });
             }
         }
+
+        public List<Agent> Receiving()
+        {
+            var ConnectionString = _connectionManager.GetConnection();
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                return connection.Query<Agent>("SELECT AgentId, AgentUrl FROM agents").ToList();
+            }
+        }
     }
 }

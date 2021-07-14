@@ -1,24 +1,24 @@
 ﻿using Dapper;
 using MetricsManager.Client;
+using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
-using MetricsManager.Responses;
+using MetricsManager.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsManager.Repository
+namespace MetricsManager.Responses
 {
-    public class HddMetricsRepository : IHddMetricRepository
+    public class DotNetMetricRepository : IDotNetMetricRepository
     {
         private ConnectionManager connectionManager;
         public IMetricsAgentClient _metricsAgentClient;
-        public AllHddMetricsApiResponse _allHddMetricsApiResponse;
+        public AllDotNetMetricsApiResponse _allHddMetricsApiResponse;
         private IAgentsrRepository _AgentsrRepository;
 
-
-        public HddMetricsRepository(ConnectionManager ConnectionManager, IAgentsrRepository  AgentsrRepository)
+        public DotNetMetricRepository(ConnectionManager ConnectionManager, IAgentsrRepository AgentsrRepository)
         {
             connectionManager = ConnectionManager;
             _AgentsrRepository = AgentsrRepository;
@@ -29,24 +29,24 @@ namespace MetricsManager.Repository
             long time;
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                var count = connection.QuerySingle<int>("SELECT COUNT(1) FROM hddmetrics");
+                var count = connection.QuerySingle<int>("SELECT COUNT(1) FROM dotnetmetrics");
                 if (count == 0)
                 {
                     time = 0;
                 }
-                else time = connection.QuerySingle<long>("SELECT MAX(Time) FROM hddmetrics");
+                else time = connection.QuerySingle<long>("SELECT MAX(Time) FROM dotnetmetrics");
 
                 return DateTimeOffset.FromUnixTimeSeconds(time);
             }
         }
-        public void Create(List<HddMetricDto> Metrics) 
+        public void Create(List<DotNetMetricDto> Metrics)
         {
             var ConnectionString = connectionManager.GetConnection();
             foreach (var item in Metrics)
             {
                 using (var connection = new SQLiteConnection(ConnectionString))
                 {
-                    connection.Execute("INSERT INTO hddmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
+                    connection.Execute("INSERT INTO dotnetmetrics(value, time, agentId) VALUES(@value, @time, @agentId)",
                         new
                         {
                             // value подставится на место "@value" в строке запроса
@@ -59,8 +59,7 @@ namespace MetricsManager.Repository
                 }
             }
         }
-
-        public IList<HddMetricInquiry> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        public IList<DotNetMetricInquiry> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
             bool enabledAgent;
@@ -73,7 +72,7 @@ namespace MetricsManager.Repository
             {
                 using (var connection = new SQLiteConnection(ConnectionString))
                 {
-                    return connection.Query<HddMetricInquiry>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
+                    return connection.Query<DotNetMetricInquiry>("SELECT Id, Value, Time, agentId FROM dotnetmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
                         new
                         {
                             fromTime = fromTime.ToUnixTimeSeconds(),
@@ -82,22 +81,20 @@ namespace MetricsManager.Repository
                         }).ToList();
                 }
             }
-            return new List<HddMetricInquiry>();
+            return new List<DotNetMetricInquiry>();
         }
-
-        public IList<HddMetricInquiry> GetByAllTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime) 
+        public IList<DotNetMetricInquiry> GetByAllTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
             var clientBaseAddress = _AgentsrRepository.ClientBaseAddress();
-
             if (clientBaseAddress.Count != 0)
             {
-                var listMetrics = new List<HddMetricInquiry>();
+                var listMetrics = new List<DotNetMetricInquiry>();
                 for (int i = 0; i < clientBaseAddress.Count; i++)
                 {
                     using (var connection = new SQLiteConnection(ConnectionString))
                     {
-                        listMetrics.AddRange(connection.Query<HddMetricInquiry>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
+                        listMetrics.AddRange(connection.Query<DotNetMetricInquiry>("SELECT Id, Value, Time, agentId FROM dotnetmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
                             new
                             {
                                 fromTime = fromTime.ToUnixTimeSeconds(),
@@ -108,7 +105,7 @@ namespace MetricsManager.Repository
                 }
                 return listMetrics;
             }
-            return new List<HddMetricInquiry>();
+            return new List<DotNetMetricInquiry>();
         }
     }
 }

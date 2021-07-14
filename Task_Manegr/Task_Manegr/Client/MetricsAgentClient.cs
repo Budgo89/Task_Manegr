@@ -44,7 +44,7 @@ namespace MetricsManager.Client
                 _logger.LogError(ex.Message);
 
             }
-            return null;
+            return new AllHddMetricsApiResponse();
         }
 
         public AllRamMetricsApiResponse GetAllRamMetrics(GetAllRamMetricsApiRequest request)
@@ -68,10 +68,10 @@ namespace MetricsManager.Client
                 _logger.LogError(ex.Message);
 
             }
-            return null;
+            return new AllRamMetricsApiResponse();
         }
 
-        public AllCpuMetricsApiResponse GetCpuMetrics(GetAllCpuMetricsApiRequest request)
+        public AllCpuMetricsApiResponse GetAllCpuMetrics(GetAllCpuMetricsApiRequest request)
         {
             var fromParameter = request.FromTime;
             var toParameter = request.ToTime;
@@ -90,12 +90,11 @@ namespace MetricsManager.Client
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-
             }
-            return null;
+            return new AllCpuMetricsApiResponse();
         }
 
-        public AllDonNetMetricsApiResponse GetDonNetMetrics(GetAllDonNetHeapMetrisApiRequest request)
+        public AllDotNetMetricsApiResponse GetAllDotNetMetrics(GetAllDotNetHeapMetrisApiRequest request)
         {
             var fromParameter = request.FromTime;
             var toParameter = request.ToTime;
@@ -108,7 +107,7 @@ namespace MetricsManager.Client
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var a = JsonSerializer.DeserializeAsync<AllDonNetMetricsApiResponse>(responseStream, options).Result;
+                var a = JsonSerializer.DeserializeAsync<AllDotNetMetricsApiResponse>(responseStream, options).Result;
                 return a;
             }
             catch (Exception ex)
@@ -116,10 +115,10 @@ namespace MetricsManager.Client
                 _logger.LogError(ex.Message);
 
             }
-            return null;
+            return new AllDotNetMetricsApiResponse();
         }
 
-        public AllNetworkMetricsApiRespodse GetNetworkMetrics(GetAllNetworkMetricsApiRespodse request)
+        public AllNetworkMetricsApiRespodse GetAllNetworkMetrics(GetAllNetworkMetricsApiRespodse request)
         {
             var fromParameter = request.FromTime;
             var toParameter = request.ToTime;
@@ -140,7 +139,7 @@ namespace MetricsManager.Client
                 _logger.LogError(ex.Message);
 
             }
-            return null;
+            return new AllNetworkMetricsApiRespodse();
         }
     }
 }

@@ -12,5 +12,7 @@ namespace MetricsManager.DAL.Models
         public long Value { get; set; }
 
         public DateTimeOffset Time { get; set; }
+
+        public int AgentId { get; set; }
     }
 }

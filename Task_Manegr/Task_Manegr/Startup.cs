@@ -2,6 +2,7 @@
 using AutoMapper;
 using FluentMigrator.Runner;
 using MetricsManager.Client;
+using MetricsManager.DAL.Interfaces;
 using MetricsManager.Jobs;
 using MetricsManager.Repository;
 using MetricsManager.Responses;
@@ -51,8 +52,16 @@ namespace MetricsManager
                ).AddLogging(lb => lb
                    .AddFluentMigratorConsole());
             services.AddSingleton<IHddMetricRepository, HddMetricsRepository>();
+            services.AddSingleton<ICpuMetricRepository, CpuMetricRepository>();
+            services.AddSingleton<IDotNetMetricRepository, DotNetMetricRepository>();
+            services.AddSingleton<INetworkMetricRepository, NetworkMetricRepository>();
+            services.AddSingleton<IRamMetricRepository, RamMetricRepository>();
             services.AddSingleton<IAgentsrRepository, AgentsRepository>();
             services.AddSingleton<AllHddMetricsApiResponse>();
+            services.AddSingleton<AllCpuMetricsApiResponse>();
+            services.AddSingleton<AllDotNetMetricsApiResponse>();
+            services.AddSingleton<AllNetworkMetricsApiRespodse>();
+            services.AddSingleton<AllRamMetricsApiResponse>();
             services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
                  .AddTransientHttpErrorPolicy(p =>
                 p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
@@ -64,8 +73,24 @@ namespace MetricsManager
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();            
             services.AddHostedService<QuartzHostedService>();
             services.AddSingleton<HddMetricsJob>();
+            services.AddSingleton<CpuMetricsJob>();
+            services.AddSingleton<DotNetMetricsJob>();
+            services.AddSingleton<NetworkMetricsJob>();
+            services.AddSingleton<RamMetricsJob>();
             services.AddSingleton(new JobSchedule(
                     jobType: typeof(HddMetricsJob),
+                    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                    jobType: typeof(CpuMetricsJob),
+                    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                    jobType: typeof(DotNetMetricsJob),
+                    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                    jobType: typeof(NetworkMetricsJob),
+                    cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+                    jobType: typeof(RamMetricsJob),
                     cronExpression: "0/5 * * * * ?"));
 
             services.AddSwaggerGen(c =>
