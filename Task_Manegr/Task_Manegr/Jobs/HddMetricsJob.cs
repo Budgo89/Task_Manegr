@@ -54,8 +54,6 @@ namespace MetricsManager.Jobs
                             Time = metric.Time,
                             AgentId = clientBaseAddress[i].AgentId
                         });
-                        
-                        //_repository.Create(_mapper.Map<HddMetrics>(metric));
                     }
                     _repository.Create(MetricsDto);
         }

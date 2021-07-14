@@ -17,10 +17,11 @@ namespace MetricsManager.Client
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger _logger;
-        public MetricsAgentClient(HttpClient httpClient)
+        public MetricsAgentClient(HttpClient httpClient, ILogger<MetricsAgentClient> logger)
         {
             _httpClient = httpClient;
-            ILogger<MetricsAgentClient> logger;
+            
+            _logger = logger;
         }
         public AllHddMetricsApiResponse GetAllHddMetrics(GetAllHddMetricsApiRequest request)
         {
@@ -45,25 +46,101 @@ namespace MetricsManager.Client
             }
             return null;
         }
-       
-        //public AllRamMetricsApiResponse GetAllRamMetrics(GetAllRamMetricsApiRequest request)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
-        //public AllCpuMetricsApiResponse GetCpuMetrics(GetAllCpuMetricsApiRequest request)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public AllRamMetricsApiResponse GetAllRamMetrics(GetAllRamMetricsApiRequest request)
+        {
+            var fromParameter = request.FromTime;
+            var toParameter = request.ToTime;
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.ClientBaseAddress}api/metrics/ram/available/from/{fromParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}/to/{toParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var a = JsonSerializer.DeserializeAsync<AllRamMetricsApiResponse>(responseStream, options).Result;
+                return a;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
 
-        //public AllDonNetMetricsApiResponse GetDonNetMetrics(GetAllDonNetHeapMetrisApiRequest request)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            }
+            return null;
+        }
 
-        //public AllNetworkMetricsApiRespodse GetNetworkMetrics(GetAllNetworkMetricsApiRespodse request)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public AllCpuMetricsApiResponse GetCpuMetrics(GetAllCpuMetricsApiRequest request)
+        {
+            var fromParameter = request.FromTime;
+            var toParameter = request.ToTime;
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.ClientBaseAddress}api/metrics/cpu/from/{fromParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}/to/{toParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var a = JsonSerializer.DeserializeAsync<AllCpuMetricsApiResponse>(responseStream, options).Result;
+                return a;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
+        }
+
+        public AllDonNetMetricsApiResponse GetDonNetMetrics(GetAllDonNetHeapMetrisApiRequest request)
+        {
+            var fromParameter = request.FromTime;
+            var toParameter = request.ToTime;
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.ClientBaseAddress}api/metrics/dotnet/errors-count/from/{fromParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}/to/{toParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var a = JsonSerializer.DeserializeAsync<AllDonNetMetricsApiResponse>(responseStream, options).Result;
+                return a;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
+        }
+
+        public AllNetworkMetricsApiRespodse GetNetworkMetrics(GetAllNetworkMetricsApiRespodse request)
+        {
+            var fromParameter = request.FromTime;
+            var toParameter = request.ToTime;
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"{request.ClientBaseAddress}api/metrics/network/from/{fromParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}/to/{toParameter.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+            try
+            {
+                HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var a = JsonSerializer.DeserializeAsync<AllNetworkMetricsApiRespodse>(responseStream, options).Result;
+                return a;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+            }
+            return null;
+        }
     }
 }

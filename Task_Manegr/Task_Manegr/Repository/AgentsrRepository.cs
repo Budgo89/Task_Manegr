@@ -38,7 +38,7 @@ namespace MetricsManager.Repository
             var ConnectionString = _connectionManager.GetConnection();
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<Agent>("SELECT AgentId, AgentUrl FROM agents").ToList();
+                return connection.Query<Agent>("SELECT AgentId, AgentUrl FROM agents WHERE enabled = true").ToList();
             }
         }
         public int CountAgent()
@@ -48,6 +48,34 @@ namespace MetricsManager.Repository
             using (var connection = new SQLiteConnection(ConnectionString))
             {
                 return connection.QuerySingle<int>("SELECT COUNT(1) FROM agents WHERE enabled = true");
+            }
+        }
+
+        public void DisableAgentById(int agentId)
+        {
+            var ConnectionString = _connectionManager.GetConnection();
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Execute("UPDATE agents SET enabled = @enabled WHERE AgentId = AgentId",
+                    new
+                    {
+                        AgentId = agentId,
+                        enabled = false
+                    });
+            }
+        }
+
+        public void EnableAgentById(int agentId)
+        {
+            var ConnectionString = _connectionManager.GetConnection();
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Execute("UPDATE agents SET enabled = @enabled WHERE AgentId = AgentId",
+                    new
+                    {
+                        AgentId = agentId,
+                        enabled = true
+                    });
             }
         }
     }

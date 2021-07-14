@@ -8,5 +8,6 @@ namespace MetricsManager.Repository
     public interface IRepository<T> where T : class
     {
         IList<T> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime);
+        IList<T> GetByAllTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime);
     }
 }

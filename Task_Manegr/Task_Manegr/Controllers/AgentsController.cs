@@ -33,6 +33,7 @@ namespace MetricsManager.Controllers
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
+            _agentsrRepository.EnableAgentById(agentId);
             _logger.LogInformation("Входные данные {agentId}", agentId);
             return Ok();
         }
@@ -40,6 +41,7 @@ namespace MetricsManager.Controllers
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
+            _agentsrRepository.DisableAgentById(agentId);
             _logger.LogInformation("Входные данные {agentId}", agentId);
             return Ok();
         }

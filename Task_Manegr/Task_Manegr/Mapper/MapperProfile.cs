@@ -17,6 +17,9 @@ namespace MetricsManager
             CreateMap<HddMetrics, HddMetricDto>();
             CreateMap<NetworkMetric, NetworkMetricDto>();
             CreateMap<RamMetric, RamMetricDto>();
+            CreateMap<HddMetricInquiry, HddMetricDto>();
+            CreateMap<long, DateTimeOffset>().ConvertUsing(new LongToDateTimeOffsetConverter());
+            CreateMap<DateTimeOffset, long>().ConvertUsing(new DateTimeOffsetToLongConverter());
         }
     }
 }

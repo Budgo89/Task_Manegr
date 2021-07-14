@@ -31,22 +31,27 @@ namespace MetricsManager.Controllers
             fromTime = new DateTimeOffset(fromTime.UtcDateTime);
             toTime = new DateTimeOffset(toTime.UtcDateTime);
             var metrics = _repository.GetByTimePeriod(agentId, fromTime, toTime);
-            var response = new AllHddMetricsApiResponse()
-            {
-                Metrics = new List<HddMetrics>()
-            };
+            var response = new List<HddMetricDto>();
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(_mapper.Map<HddMetrics>(metric));
+                response.Add(_mapper.Map<HddMetricDto>(metric));
             }
             return Ok(response);
         }
 
-        [HttpGet("cluster/from{fromTime}/to/{toTime}")]
+        [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAllCluster([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
             _logger.LogInformation("Входные данные {fromTime} , {toTime}", fromTime, toTime);
-            return Ok();
+            fromTime = new DateTimeOffset(fromTime.UtcDateTime);
+            toTime = new DateTimeOffset(toTime.UtcDateTime);
+            var metrics = _repository.GetByAllTimePeriod(fromTime, toTime);
+            var response = new List<HddMetricDto>();
+            foreach (var metric in metrics)
+            {
+                response.Add(_mapper.Map<HddMetricDto>(metric));
+            }
+            return Ok(response);
         }
     }
 }

@@ -12,21 +12,10 @@ namespace MetricsManager.Repository
 {
     public class HddMetricsRepository : IHddMetricRepository
     {
-        private ConnectionManager connectionManager = new ConnectionManager();
+        private ConnectionManager connectionManager;
         public IMetricsAgentClient _metricsAgentClient;
         public AllHddMetricsApiResponse _allHddMetricsApiResponse;
-
-        public void ReadingMetricsFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime)
-        {
-            //GetAllHddMetricsApiRequest getAllHddMetricsApiRequest = new GetAllHddMetricsApiRequest(fromTime, toTime);
-            //_allHddMetricsApiResponse = _metricsAgentClient.GetAllHddMetrics(getAllHddMetricsApiRequest);
-            //var response = new AllHddMetricsApiResponse()
-            //{
-            //    Metrics = new List<HddMetrics>()
-            //};
-            //response = _allHddMetricsApiResponse;
-            //Create(response.Metrics);
-        }
+        private IAgentsrRepository _AgentsrRepository;
         public DateTimeOffset FromTime()
         {
             var ConnectionString = connectionManager.GetConnection();
@@ -43,6 +32,12 @@ namespace MetricsManager.Repository
                 return DateTimeOffset.FromUnixTimeSeconds(time);
             }
             
+        }
+
+        public HddMetricsRepository(ConnectionManager ConnectionManager, IAgentsrRepository  AgentsrRepository)
+        {
+            connectionManager = ConnectionManager;
+            _AgentsrRepository = AgentsrRepository;
         }
 
         public void Create(List<HddMetricDto> Metrics) 
@@ -66,33 +61,52 @@ namespace MetricsManager.Repository
             }
         }
 
-        public IList<HddMetricDto> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
+        public IList<HddMetricInquiry> GetByTimePeriod(int agentId, DateTimeOffset fromTime, DateTimeOffset toTime)
         {
             var ConnectionString = connectionManager.GetConnection();
+            bool enabledAgent;
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<HddMetricDto>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)", 
-                    new 
-                    {                       
-                        fromTime = fromTime.ToUnixTimeSeconds(), 
-                        toTime = toTime.ToUnixTimeSeconds(),
-                        agentId = agentId
-                    }).ToList();
+                enabledAgent = connection.QuerySingle<bool>("SELECT enabled FROM agents WHERE agentId = @agentId",
+                    new { agentId = agentId });
             }
+            if (enabledAgent == true)
+            {
+                using (var connection = new SQLiteConnection(ConnectionString))
+                {
+                    return connection.Query<HddMetricInquiry>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
+                        new
+                        {
+                            fromTime = fromTime.ToUnixTimeSeconds(),
+                            toTime = toTime.ToUnixTimeSeconds(),
+                            agentId = agentId
+                        }).ToList();
+                }
+            }
+            return new List<HddMetricInquiry>();
         }
 
-        //public void Create(HddMetrics item)
-        //{
-        //    var ConnectionString = connectionManager.GetConnection();
-        //    using (var connection = new SQLiteConnection(ConnectionString))
-        //    {
-        //        connection.Execute("INSERT INTO hddmetrics(value, time) VALUES(@value, @time)",
-        //            new
-        //            {
-        //                value = item.Value,
-        //                time = item.Time.ToUnixTimeSeconds()
-        //            });
-        //    }
-        //}
+        public IList<HddMetricInquiry> GetByAllTimePeriod(DateTimeOffset fromTime, DateTimeOffset toTime) 
+        {
+            var ConnectionString = connectionManager.GetConnection();
+            var clientBaseAddress = _AgentsrRepository.ClientBaseAddress();
+            if (clientBaseAddress.Count != 0)
+            {
+                for (int i = 0; i < clientBaseAddress.Count; i++)
+                {
+                    using (var connection = new SQLiteConnection(ConnectionString))
+                    {
+                        return connection.Query<HddMetricInquiry>("SELECT Id, Value, Time, agentId FROM hddmetrics WHERE (time >= @fromTime) AND (time <= @toTime) AND (agentId = @agentId)",
+                            new
+                            {
+                                fromTime = fromTime.ToUnixTimeSeconds(),
+                                toTime = toTime.ToUnixTimeSeconds(),
+                                agentId = clientBaseAddress[i].AgentId
+                            }).ToList();
+                    }
+                }
+            }
+            return new List<HddMetricInquiry>();
+        }
     }
 }
