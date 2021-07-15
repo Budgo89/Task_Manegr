@@ -50,7 +50,7 @@
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[5.0.2, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
@@ -62,7 +62,7 @@
             },
             "NLog.Web.AspNetCore": {
               "target": "Package",
-              "version": "[4.12.0, )"
+              "version": "[4.13.0, )"
             },
             "coverlet.collector": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -162,7 +162,7 @@
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[5.0.2, )"
             },
             "NLog": {
               "target": "Package",
@@ -171,6 +171,10 @@
             "NLog.Web.AspNetCore": {
               "target": "Package",
               "version": "[4.12.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
             },
             "Quartz": {
               "target": "Package",

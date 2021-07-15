@@ -25,7 +25,12 @@ namespace MetricsAgent.Controllers
             this.mapper = mapper;
         }
 
-
+        /// <summary>
+        /// Запрос Метрик CPU из БД
+        /// </summary>
+        /// <param name="fromTime">Дата и время начального периода загрузки. Формат: 2021-06-14T12:04:00Z</param>
+        /// <param name="toTime">Дата и время конечного периода загрузки. Формат: 2021-06-14T12:04:00Z</param>
+        /// <returns></returns>
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetAgentFromAgent([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {

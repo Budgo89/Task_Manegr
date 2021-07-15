@@ -25,7 +25,13 @@ namespace MetricsManager.Controllers
             _repository = repository;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Получение CPU Метрик для агента с ID
+        /// </summary>
+        /// <param name="agentId">ID агента</param>
+        /// <param name="fromTime">Дата и время начального периода загрузки. Формат: 2021-06-14T12:04:00Z</param>
+        /// <param name="toTime">Дата и время конечного периода загрузки. Формат: 2021-06-14T12:04:00Z</param>
+        /// <returns></returns>
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] int agentId, [FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {
@@ -40,7 +46,12 @@ namespace MetricsManager.Controllers
             }
             return Ok(response);
         }
-
+        /// <summary>
+        /// Получение CPU Метрик для всех включённых агентов
+        /// </summary>
+        /// <param name="fromTime">Дата и время начального периода загрузки. Формат: 2021-06-14T12:04:00Z</param>
+        /// <param name="toTime">Дата и время конечного периода загрузки. Формат: 2021-06-14T12:04:00Z</param>
+        /// <returns></returns>
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAllCluster([FromRoute] DateTimeOffset fromTime, [FromRoute] DateTimeOffset toTime)
         {

@@ -21,7 +21,11 @@ namespace MetricsManager.Controllers
             _logger.LogDebug(1, "NLog встроен в AgentsController");
             _agentsrRepository = AgentsrRepository;
         }
-
+        /// <summary>
+        /// Регистрация Метрик Агента. Агент по умолчанию включён
+        /// </summary>
+        /// <param name="agentInfo"> агент Url, Id </param>
+        /// <returns></returns>
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] AgentInfo agentInfo)
         {
@@ -29,7 +33,11 @@ namespace MetricsManager.Controllers
             _logger.LogInformation("Входные данные {agentInfo}", agentInfo);
             return Ok();
         }
-
+        /// <summary>
+        /// Включение Агента
+        /// </summary>
+        /// <param name="agentId">Id агента</param>
+        /// <returns></returns>
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
@@ -37,7 +45,11 @@ namespace MetricsManager.Controllers
             _logger.LogInformation("Входные данные {agentId}", agentId);
             return Ok();
         }
-
+        /// <summary>
+        /// Выключение агента
+        /// </summary>
+        /// <param name="agentId">Id агента</param>
+        /// <returns></returns>
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
@@ -45,6 +57,10 @@ namespace MetricsManager.Controllers
             _logger.LogInformation("Входные данные {agentId}", agentId);
             return Ok();
         }
+        /// <summary>
+        /// Список агентов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("receiving")]
         public IActionResult ReceivingAgentById()
         {
