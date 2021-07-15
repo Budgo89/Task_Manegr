@@ -15,6 +15,7 @@ namespace MetricsManager.Repository
         public IMetricsAgentClient _metricsAgentClient;
         public AllCpuMetricsApiResponse _allHddMetricsApiResponse;
         private IAgentsrRepository _AgentsrRepository;
+
         public CpuMetricRepository(ConnectionManager ConnectionManager, IAgentsrRepository AgentsrRepository)
         {
             connectionManager = ConnectionManager;
@@ -104,5 +105,6 @@ namespace MetricsManager.Repository
             }
             return new List<CpuMetricInquiry>();
         }
+
     }
 }
