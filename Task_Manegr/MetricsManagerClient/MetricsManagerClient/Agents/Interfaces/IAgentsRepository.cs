@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace MetricsManagerClient.Agents.Interfaces
 {
-    internal interface IAgentsRepository
+    public interface IAgentsRepository
     {
-        AgentApiResponse ReceivingAgentById();
+        public AgentApiResponse ReceivingAgentById();
         public void EnableAgent(string IdClientText);
         public void DisableAgent(string IdClientText);
+        public void RegisterAgent(string IdClientText, string url);
     }
 }

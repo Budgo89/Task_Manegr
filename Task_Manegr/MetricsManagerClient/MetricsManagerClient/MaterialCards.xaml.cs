@@ -2,6 +2,7 @@
 
 using LiveCharts;
 using LiveCharts.Wpf;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,7 @@ namespace MetricsManagerClient
             {
                 new ColumnSeries
                 {
-                    Values = new ChartValues<double> { 10,20,30,40,50,60,70,80,90.100 }
+                    Values = new ChartValues<double> {  }
                 }
             };
 

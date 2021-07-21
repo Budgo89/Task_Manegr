@@ -16,5 +16,42 @@
         <Button x:Name="disable" Content="Выключить Агента" HorizontalAlignment="Left" Height="24" Margin="214,232,0,0" VerticalAlignment="Top" Width="115" Click="Disable_Click"/>
         <Label Content="ID" HorizontalAlignment="Left" Margin="82,276,0,0" VerticalAlignment="Top" Height="30"/>
         <TextBox x:Name="IdClientText" HorizontalAlignment="Left" Height="19" Margin="109,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"/>
+        <Label Content="Id Агента" HorizontalAlignment="Left" Margin="1150,123,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="90">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Время начала" HorizontalAlignment="Left" Margin="1150,173,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="115">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label Content="Время окончания" HorizontalAlignment="Left" Margin="1150,214,0,0" VerticalAlignment="Top" Width="115"/>
+        <TextBox x:Name="IdAgentaMetric" HorizontalAlignment="Left" Margin="1271,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
+        <TextBox x:Name="fromTime" HorizontalAlignment="Left" Margin="1271,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
+        <TextBox x:Name="toTime" HorizontalAlignment="Left" Margin="1271,219,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Height="20"/>
+        <Button x:Name="CpuMetrics" Content="CPU Metrics агента" HorizontalAlignment="Left" Margin="1150,296,0,0" VerticalAlignment="Top" Width="341" Click="CpuMetrics_Click"/>
+        <Button x:Name="CpuMetricsAll" Content="CPU Metrics вcex агентов" HorizontalAlignment="Left" Margin="1150,321,0,0" VerticalAlignment="Top" Width="341" Height="20" Click="CpuMetricsAll_Click"/>
+        <Button x:Name="DotNetMetrics" Content="DotNet Metrics агента" HorizontalAlignment="Left" Margin="1150,346,0,0" VerticalAlignment="Top" Width="341" Click="DotNetMetrics_Click"/>
+        <Button x:Name="DotNetMetricsAll" Content="DotNet Metrics всех агентов" HorizontalAlignment="Left" Margin="1150,371,0,0" VerticalAlignment="Top" Width="341" Click="DotNetMetricsAll_Click"/>
+        <Button x:Name="HddMetrics" Content="Hdd Metrics агента" HorizontalAlignment="Left" Margin="1150,396,0,0" VerticalAlignment="Top" Width="341" Click="HddMetrics_Click"/>
+        <Button x:Name="HddMetricsAll" Content="Hdd Metrics всех агентов" HorizontalAlignment="Left" Margin="1150,421,0,0" VerticalAlignment="Top" Width="341" Click="HddMetricsAll_Click"/>
+        <Button x:Name="NetworkMetrics" Content="Network Metrics агента" HorizontalAlignment="Left" Margin="1150,446,0,0" VerticalAlignment="Top" Width="341" Click="NetworkMetrics_Click"/>
+        <Button x:Name="NetworkMetricsAll" Content="Network Metrics всех агентов" HorizontalAlignment="Left" Margin="1150,471,0,0" VerticalAlignment="Top" Width="341" Click="NetworkMetricsAll_Click"/>
+        <Button x:Name="RamMetrics" Content="Ram Metrics агента" HorizontalAlignment="Left" Margin="1150,496,0,0" VerticalAlignment="Top" Width="341" Click="RamMetrics_Click"/>
+        <Button x:Name="RamMetricsAll" Content="Ram Metrics всех агентов" HorizontalAlignment="Left" Margin="1150,521,0,0" VerticalAlignment="Top" Width="341" Click="RamMetricsAll_Click"/>
+        <Label Content="Url" HorizontalAlignment="Left" Margin="77,311,0,0" VerticalAlignment="Top" Width="31"/>
+        <TextBox x:Name="Url" HorizontalAlignment="Left" Margin="109,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"/>
+        <Button x:Name="Register" Content="Зарегистрировать агент" HorizontalAlignment="Left" Margin="72,346,0,0" VerticalAlignment="Top" Width="257" Click="Register_Click"/>
     </Grid>
 </Window>

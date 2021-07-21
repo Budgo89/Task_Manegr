@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Models;
+using MetricsManager.Repository.Object;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,7 +45,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<DotNetMetricDto>(metric));
             }
-            return Ok(response);
+            var responseDotNet = new DotNetMetricObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseDotNet);
         }
         /// <summary>
         /// Получение dotnet Метрик для всех включённых агентов
@@ -64,7 +69,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<DotNetMetricDto>(metric));
             }
-            return Ok(response);
+            var responseDotNet = new DotNetMetricObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseDotNet);
         }
     }
 }

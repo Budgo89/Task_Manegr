@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MetricsManager.DAL.Models;
 using MetricsManager.Repository;
+using MetricsManager.Repository.Object;
 using MetricsManager.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -42,7 +43,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<HddMetricDto>(metric));
             }
-            return Ok(response);
+            var responseHdd = new HddMetricsObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseHdd);
         }
         /// <summary>
         /// Получение hdd Метрик для всех включённых агентов
@@ -62,7 +67,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<HddMetricDto>(metric));
             }
-            return Ok(response);
+            var responseHdd = new HddMetricsObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseHdd);
         }
     }
 }

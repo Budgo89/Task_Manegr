@@ -1,9 +1,12 @@
 ﻿using MetricsManagerClient.Agents.Interfaces;
+using MetricsManagerClient.Agents.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,7 +17,6 @@ namespace MetricsManagerClient.Agents.Repository
     {
         private readonly HttpClient _httpClient;
         private IConnectionManager _connectionManager;
-        //ConnectionManager
         public AgentsRepository()
         {
             _httpClient = new HttpClient();
@@ -27,17 +29,14 @@ namespace MetricsManagerClient.Agents.Repository
             {                
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
-                //var d = StreamToString(responseStream);
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var a = JsonSerializer.DeserializeAsync<AgentApiResponse>(responseStream, options).Result;
-                return a;
+                return JsonSerializer.DeserializeAsync<AgentApiResponse>(responseStream, options).Result;
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -51,7 +50,6 @@ namespace MetricsManagerClient.Agents.Repository
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -65,19 +63,35 @@ namespace MetricsManagerClient.Agents.Repository
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
-        public string StreamToString(Stream stream)
+
+        public void RegisterAgent(string IdClientText, string url)
         {
-            stream.Position = 0;
-            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            var agentInfo = new AgentInfo
             {
-                return reader.ReadToEnd();
+                AgentId = Convert.ToInt32(IdClientText),
+                AgentAddress = url
+            };
+            var agentInfoJson = JsonSerializer.Serialize(agentInfo);
+            var client = new HttpClient();
+            client.BaseAddress = new Uri($"{_connectionManager.GetConnection()}/api/Agents/register");
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, client.BaseAddress);
+                request.Headers.Add("Accept", "application/json");
+                request.Content = new StringContent(
+                    agentInfoJson.ToString(),
+                    Encoding.UTF8,
+                    "application/json"
+                    );
+                client.SendAsync(request);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
-
-
     }
 }

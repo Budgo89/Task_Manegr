@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using MetricsManager.Client;
 using MetricsManager.DAL.Models;
+using MetricsManager.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,7 +46,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<CpuMetricDto>(metric));
             }
-            return Ok(response);
+            var responseCpu = new CpuMetricsObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseCpu);
         }
         /// <summary>
         /// Получение CPU Метрик для всех включённых агентов
@@ -64,7 +70,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<CpuMetricDto>(metric));
             }
-            return Ok(response);
+            var responseCpu = new CpuMetricsObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseCpu);
         }
 
     }
