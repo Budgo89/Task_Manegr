@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MetricsManager.DAL.Models;
 using MetricsManager.Jobs;
+using MetricsManager.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,7 +46,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<NetworkMetricDto>(metric));
             }
-            return Ok(response);
+            var responseNetwork = new NetworkMetricObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseNetwork);
         }
         /// <summary>
         /// Получение network Метрик для всех включённых агентов
@@ -65,7 +70,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<NetworkMetricDto>(metric));
             }
-            return Ok(response);
+            var responseNetwork = new NetworkMetricObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseNetwork);
         }
     }
 }

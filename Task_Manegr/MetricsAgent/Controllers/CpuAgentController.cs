@@ -46,8 +46,7 @@ namespace MetricsAgent.Controllers
             foreach (var metric in metrics)
             {
                 response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
-            }
-
+            }            
             return Ok(response);
         }
 

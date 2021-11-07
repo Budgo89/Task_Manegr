@@ -103,6 +103,7 @@ namespace MetricsManager.Client
             {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
                 using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                //string strout = StreamToString(responseStream);
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
@@ -140,6 +141,14 @@ namespace MetricsManager.Client
 
             }
             return new AllNetworkMetricsApiRespodse();
+        }
+        public string StreamToString(Stream stream)
+        {
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }

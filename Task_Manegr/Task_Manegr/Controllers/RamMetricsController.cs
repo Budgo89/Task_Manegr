@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MetricsManager.DAL.Models;
 using MetricsManager.Repository;
+using MetricsManager.Repository.Object;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -41,7 +42,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<RamMetricDto>(metric));
             }
-            return Ok(response);
+            var responseRam = new RamMetricObject()
+            {
+                Metrics = response
+            };           
+            return Ok(responseRam);
         }
         /// <summary>
         /// Получение ram Метрик для всех включённых агентов
@@ -61,7 +66,11 @@ namespace MetricsManager.Controllers
             {
                 response.Add(_mapper.Map<RamMetricDto>(metric));
             }
-            return Ok(response);
+            var responseRam = new RamMetricObject()
+            {
+                Metrics = response
+            };
+            return Ok(responseRam);
         }
     }
 }

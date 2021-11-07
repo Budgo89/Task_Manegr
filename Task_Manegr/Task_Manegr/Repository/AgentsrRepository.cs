@@ -79,13 +79,19 @@ namespace MetricsManager.Repository
             }
         }
 
-        public List<Agent> Receiving()
+        public AgentObject Receiving()
         {
+            List<Agent> AgentList;
             var ConnectionString = _connectionManager.GetConnection();
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<Agent>("SELECT AgentId, AgentUrl FROM agents").ToList();
+                AgentList = connection.Query<Agent>("SELECT AgentId, AgentUrl, Enabled FROM agents").ToList();
             }
+            var agentObject = new AgentObject()
+            {
+                Agent = AgentList
+            };
+            return agentObject;
         }
     }
 }
